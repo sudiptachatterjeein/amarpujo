@@ -1,0 +1,17 @@
+{
+  "name": "Puja Map 2026 · পুজো ম্যাপ ২০২৬",
+  "short_name": "Puja Map",
+  "description": "Kolkata Durga Puja 2026 pandal map with metro, live weather and routes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#120E2B",
+  "theme_color": "#120E2B",
+  "lang": "en",
+  "icons": [
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

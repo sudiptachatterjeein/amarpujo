@@ -1,0 +1,109 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#120E2B"><meta name="color-scheme" content="dark"><title>Puja Map 2026 · Admin</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+:root{color-scheme:dark;--night:#120E2B;--surface:#1B1642;--raise:#261F58;--line:rgba(255,255,255,.1);--ink:#F7F0E1;--mut:#B7AEDC;--zari:#F6B93B;--red:#FF8A7A}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 "Anek Bangla",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--night);color:var(--ink)}
+.wrap{max-width:1100px;margin:auto;padding:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;margin:10px 0}
+h1{margin:0 0 8px;font-size:22px} h2{margin:0 0 8px;font-size:18px}
+input,button{padding:12px 14px;border-radius:999px;border:1px solid var(--line);font:inherit;background:var(--raise);color:var(--ink)}
+input{outline:none} input:focus{border-color:var(--zari)}
+button{background:var(--zari);color:#2A1B00;font-weight:800;cursor:pointer;border:0}
+.login{max-width:420px;margin:10vh auto}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat b{display:block;font-size:30px;line-height:1.2}
+.table{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:var(--mut);font-weight:700;font-size:13px}
+small{color:var(--mut)}.danger{color:var(--red)}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+#app{display:none}
+
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0}.row input{flex:1;min-width:140px}
+.btn2{background:var(--raise);color:var(--ink);border:1px solid var(--line);padding:7px 12px;font-size:13px;font-weight:700;border-radius:999px;cursor:pointer;white-space:nowrap}
+.btn2.warn{color:#FFB199}.btn2.ok{color:#7DF2BD}
+.idbox{display:none;margin-top:12px;padding:14px;border-radius:16px;background:#0D0A22;border:1px dashed var(--zari)}
+.idbox .code{font-size:26px;font-weight:800;letter-spacing:.08em;color:var(--zari);word-break:break-all}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;background:var(--raise);color:var(--mut)}
+.pill.active{background:rgba(61,220,151,.15);color:#7DF2BD}.pill.muted{background:rgba(246,185,59,.16);color:var(--zari)}.pill.blocked,.pill.expired{background:rgba(240,90,71,.18);color:#FFB199}
+.rep{padding:10px 12px;border-radius:14px;background:#0D0A22;margin:8px 0}.rep p{margin:4px 0;word-break:break-word}
+.stats5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}@media(max-width:700px){.stats5{grid-template-columns:repeat(2,1fr)}}
+code{color:var(--zari)}
+</style></head><body>
+<div class="wrap">
+<div id="login" class="card login"><h1>🪔 Puja Map Admin</h1><p>Private dashboard. Only the configured admin email can access visitor data.</p><input id="email" type="email" placeholder="Admin email" style="width:100%;box-sizing:border-box;margin:4px 0"><input id="password" type="password" placeholder="Password" style="width:100%;box-sizing:border-box;margin:4px 0"><button id="loginBtn">Sign in</button><p id="loginMsg"></p></div>
+<div id="app"><div class="card"><h1>🪔 Puja Map 2026 · Live Admin</h1><button id="logout">Sign out</button><span id="updated" style="margin-left:10px"></span></div>
+<div class="stats"><div class="card stat">🟢 Live now<b id="live">0</b><small>last 90 seconds</small></div><div class="card stat">👥 Seen<b id="total">0</b><small>unique visitor codes</small></div><div class="card stat">🎙️ Audio<b id="audio">0</b><small>currently marked playing</small></div><div class="card stat">📱 Mobile<b id="mobile">0</b><small>of live visitors</small></div></div>
+
+<div id="chatPanel">
+<div class="stats5"><div class="card stat">💬 Chat IDs<b id="cAll">0</b><small>created</small></div><div class="card stat">✅ Active<b id="cActive">0</b><small>not expired</small></div><div class="card stat">🟢 Online<b id="cOnline">0</b><small>last 2 minutes</small></div><div class="card stat">✉️ Messages<b id="cPosts">0</b><small>not deleted</small></div><div class="card stat">🚩 Reports<b id="cReports">0</b><small>to review</small></div></div>
+<div class="card"><h2>Create chat ID (after payment)</h2><p><small>Create the ID, copy it, and send it to the member on WhatsApp. It works as soon as it is created. Each ID works on 2 devices.</small></p>
+<div class="row"><input id="cNick" placeholder="Nickname (optional: member can choose)" maxlength="24"><input id="cNote" placeholder="Note: payment ref / phone (only you see this)" maxlength="300"></div>
+<div class="row"><label for="cUntil"><small>Valid until</small></label><input id="cUntil" type="date" value="2026-11-05" style="flex:none;min-width:0"><button id="cCreate">Create &amp; activate</button></div><p id="cMsg" class="danger"></p>
+<div class="idbox" id="cBox"><small>New ID</small><div class="code" id="cCode"></div><div class="row"><button class="btn2" id="cCopy">Copy</button><a class="btn2" id="cWa" target="_blank" rel="noopener">Send on WhatsApp</a></div></div></div>
+<div class="card"><h2>Reports</h2><div id="cReps"><small>No reports.</small></div></div>
+<div class="card"><h2>Members</h2><div class="row"><input id="cQ" placeholder="Search ID, name or note"><button class="btn2" id="cSearch">Search</button></div><div class="table"><table><thead><tr><th>ID</th><th>Name</th><th>Note</th><th>Status</th><th>Valid until</th><th>Devices</th><th>Posts</th><th>Last seen</th><th>Actions</th></tr></thead><tbody id="cRows"></tbody></table></div></div>
+</div>
+<div class="card"><h2>Live visitors</h2><p><small>IP address is server-observed. Location below is only shown if the visitor explicitly grants browser location permission. MAC address is not available to normal websites.</small></p><div class="table"><table><thead><tr><th>Visitor code</th><th>Device</th><th>IP</th><th>Page</th><th>Audio</th><th>Location</th><th>Last seen</th></tr></thead><tbody id="rows"></tbody></table></div></div></div></div>
+<script>
+// Replace these two public values with your Supabase project values. The service-role key NEVER belongs here.
+const SUPABASE_URL="https://obrtopvixqemwhvzadda.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9icnRvcHZpeHFlbXdodnphZGRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDIxNTEsImV4cCI6MjEwNjMxODE1MX0.YC39Z36MBaQ2twujKKIcU3otvmYLbF_h1mV7pxTTKAA";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const $=id=>document.getElementById(id);const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function load(){const {data:{session}}=await sb.auth.getSession();if(!session)return;$('login').style.display='none';$('app').style.display='block';const {data:d,error:err}=await sb.rpc('admin_summary');if(err){const m=err.message==='Not an admin'?'Not an admin: add your email to the admins table (last step of the SQL setup).':err.message;$('rows').innerHTML='<tr><td colspan="7" class="danger">'+esc(m||'Admin request failed')+'</td></tr>';return}const live=d.live||[];$('live').textContent=live.length;$('total').textContent=d.totalCount||0;$('audio').textContent=live.filter(x=>x.audio_playing).length;$('mobile').textContent=live.filter(x=>x.device_type==='Mobile').length;$('updated').textContent='Updated '+new Date().toLocaleTimeString();$('rows').innerHTML=live.map(x=>{const loc=x.location_permission&&x.latitude!=null?x.latitude.toFixed(5)+', '+x.longitude.toFixed(5):'Not shared';return '<tr><td><b>'+esc(x.visitor_code)+'</b></td><td>'+esc(x.device_type)+'</td><td>'+esc(x.ip_address||'—')+'</td><td>'+esc(x.current_page||'—')+'</td><td>'+(x.audio_playing?'🔴 Playing':'—')+'</td><td>'+loc+'</td><td>'+new Date(x.last_seen).toLocaleTimeString()+'</td></tr>'}).join('')||'<tr><td colspan="7">No live visitors.</td></tr>'}
+$('loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});$('loginMsg').textContent=error?error.message:'Signed in…';if(!error)load()};$('logout').onclick=()=>sb.auth.signOut().then(()=>location.reload());load();setInterval(()=>{if($('app').style.display!=='none')load()},15000);
+</script><script>
+/* ---- Puja Adda (chat) admin ---- */
+(function(){
+  const fmt=d=>d?new Date(d).toLocaleString([], {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+  const fmtD=d=>d?new Date(d).toLocaleDateString([], {day:'numeric',month:'short',year:'numeric'}):'—';
+  function waLink(note,code,until){
+    const msg='Your Puja Adda chat ID: '+code+'\nOpen the Puja Map app > Puja Adda > enter this ID. Valid until '+fmtD(until)+'. Please do not share it (it works on 2 devices).';
+    const d=(String(note||'').match(/\+?\d[\d\s\-]{8,}\d/)||[''])[0].replace(/\D/g,'');
+    const num=d.length===10?'91'+d:(d.length>=11&&d.length<=13?d:'');
+    return 'https://wa.me/'+num+'?text='+encodeURIComponent(msg);
+  }
+  window.chatLoad=async function(){
+    const q=($('cQ').value||'').trim();
+    const [l,r]=await Promise.all([sb.rpc('admin_chat_list',{p_q:q||null}),sb.rpc('admin_chat_reports')]);
+    if(l.error){$('cMsg').textContent=l.error.message==='Not an admin'?'Not an admin.':('Chat tables missing? Run supabase-chat.sql. ('+l.error.message+')');return}
+    const t=l.data.totals||{};$('cAll').textContent=t.all||0;$('cActive').textContent=t.active||0;$('cOnline').textContent=t.online||0;$('cPosts').textContent=t.posts||0;$('cReports').textContent=t.reports||0;
+    $('cRows').innerHTML=(l.data.members||[]).map(m=>{
+      const st=m.expired?'expired':m.status;
+      return '<tr><td><b>'+esc(m.code)+'</b></td><td>'+esc(m.nickname||'—')+'</td><td>'+esc(m.note||'')+'</td><td><span class="pill '+esc(st)+'">'+esc(st)+'</span></td><td>'+fmtD(m.expires_at)+'</td><td>'+m.devices+'/2</td><td>'+m.posts+'</td><td>'+fmt(m.last_seen)+'</td><td>'+
+        (m.status==='muted'?'<button class="btn2 ok" data-a="active" data-id="'+m.id+'">Unmute</button> ':'<button class="btn2" data-a="muted" data-id="'+m.id+'">Mute</button> ')+
+        (m.status==='blocked'?'<button class="btn2 ok" data-a="active" data-id="'+m.id+'">Unblock</button> ':'<button class="btn2 warn" data-a="blocked" data-id="'+m.id+'">Block</button> ')+
+        '<button class="btn2" data-a="extend" data-id="'+m.id+'" data-exp="'+esc(m.expires_at)+'">+7 days</button> <button class="btn2" data-a="reset" data-id="'+m.id+'">Reset devices</button></td></tr>';
+    }).join('')||'<tr><td colspan="9">No members yet.</td></tr>';
+    const reps=r.data||[];
+    $('cReps').innerHTML=reps.length?reps.map(x=>'<div class="rep"><small>'+esc(x.nickname)+' · '+esc(x.code)+' · room '+esc(x.room)+' · '+fmt(x.created_at)+(x.reason?' · reason: '+esc(x.reason):'')+'</small><p>'+esc(x.body)+'</p>'+
+      '<button class="btn2 warn" data-r="del" data-post="'+x.post_id+'">Delete message</button> <button class="btn2" data-r="ok" data-post="'+x.post_id+'">Dismiss</button> <button class="btn2 warn" data-r="block" data-post="'+x.post_id+'" data-member="'+x.member_id+'">Delete &amp; block member</button></div>').join(''):'<small>No reports.</small>';
+  };
+  $('cCreate').onclick=async()=>{
+    $('cMsg').textContent='';
+    const until=$('cUntil').value; const exp=until?until+'T23:59:00+05:30':null;
+    const {data,error}=await sb.rpc('admin_chat_create',{p_nickname:$('cNick').value.trim()||null,p_note:$('cNote').value.trim()||null,p_expires:exp});
+    if(error){$('cMsg').textContent=error.message;return}
+    $('cCode').textContent=data.code;$('cBox').style.display='block';$('cWa').href=waLink($('cNote').value,data.code,data.expires_at);
+    $('cBox').dataset.code=data.code;$('cNick').value='';$('cNote').value='';chatLoad();
+  };
+  $('cCopy').onclick=async()=>{const c=$('cBox').dataset.code;try{await navigator.clipboard.writeText(c);$('cCopy').textContent='Copied'}catch(e){window.prompt('Copy this ID',c)}setTimeout(()=>$('cCopy').textContent='Copy',1500)};
+  $('cSearch').onclick=chatLoad;$('cQ').addEventListener('keydown',e=>{if(e.key==='Enter')chatLoad()});
+  $('cRows').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=b.dataset.id;let args={p_id:id};
+    if(a==='extend'){const base=Math.max(Date.now(),new Date(b.dataset.exp).getTime());args.p_expires=new Date(base+7*864e5).toISOString()}
+    else if(a==='reset')args.p_reset_devices=true;else args.p_status=a;
+    const {error}=await sb.rpc('admin_chat_update',args);if(error)alert(error.message);chatLoad();
+  });
+  $('cReps').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-r]');if(!b)return;const post=+b.dataset.post;
+    const {error}=await sb.rpc('admin_chat_moderate',{p_post:post,p_delete:b.dataset.r!=='ok'});if(error){alert(error.message);return}
+    if(b.dataset.r==='block'){const r=await sb.rpc('admin_chat_update',{p_id:b.dataset.member,p_status:'blocked'});if(r.error)alert(r.error.message)}
+    chatLoad();
+  });
+  const _load=load;load=async function(){await _load();if($('app').style.display!=='none')chatLoad()};
+  setTimeout(()=>{if($('app').style.display!=='none')chatLoad()},1500);
+})();
+</script>
+</body></html>
