@@ -55,11 +55,14 @@
   PM.renderExplore = function () {
     var el = document.getElementById('v-explore'); if (!el) return;
     el.innerHTML = '<header class="vhead"><div class="search-row"><div class="search">' + PM.ic('search') + '<input id="sq" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" placeholder="' + PM.esc(T('search_ph')) + '" value="' + PM.esc(PM.st.q) + '" aria-label="' + PM.esc(T('search_ph')) + '"></div>' + PM.wxPill() + '</div>' +
-      '<div class="pill-row" id="exRegions">' + regionPills() + '</div><div class="pill-row chips" id="exZones">' + zonePills() + '</div>' +
-      '</header><div class="ex-meta"><span id="exCount"></span><div id="exProg" class="prog"></div></div><div class="list" id="exList"></div>';
+      '<div class="seg ex-mode" role="tablist"><button role="tab" data-act="ex-mode" data-m="official" class="' + (PM.st.ex === 'official' ? 'on' : '') + '">' + T('ex_official') + '</button>' +
+      '<button role="tab" data-act="ex-mode" data-m="community" id="exModeC" class="' + (PM.st.ex === 'community' ? 'on' : '') + '">' + T('ex_community') + (PM.pujas && PM.pujas.list ? ' <i>' + PM.nf(PM.pujas.list.length) + '</i>' : '') + '</button></div>' +
+      '<div id="exOfficialHead"><div class="pill-row" id="exRegions">' + regionPills() + '</div><div class="pill-row chips" id="exZones">' + zonePills() + '</div></div>' +
+      '</header><div id="exOfficial"><div class="ex-meta"><span id="exCount"></span><div id="exProg" class="prog"></div></div><div class="list" id="exList"></div></div><div id="exCommunity" hidden></div>';
     var sq = document.getElementById('sq');
-    sq.addEventListener('input', function (e) { PM.st.q = e.target.value.trim().toLowerCase(); PM.renderExploreList(); });
+    sq.addEventListener('input', function (e) { PM.st.q = e.target.value.trim().toLowerCase(); PM.renderExploreList(); if (PM.st.ex === 'community') PM.renderCommunity(); });
     PM.renderExploreList();
+    if (PM.applyExploreMode) PM.applyExploreMode();
   };
   PM.refreshExploreChips = function () {
     var a = document.getElementById('exRegions'), b = document.getElementById('exZones');

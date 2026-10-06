@@ -28,7 +28,7 @@ small{color:var(--mut)}.danger{color:var(--red)}
 .pill.active{background:rgba(61,220,151,.15);color:#7DF2BD}.pill.muted{background:rgba(246,185,59,.16);color:var(--zari)}.pill.blocked,.pill.expired{background:rgba(240,90,71,.18);color:#FFB199}
 .rep{padding:10px 12px;border-radius:14px;background:#0D0A22;margin:8px 0}.rep p{margin:4px 0;word-break:break-word}
 .stats5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}@media(max-width:700px){.stats5{grid-template-columns:repeat(2,1fr)}}
-code{color:var(--zari)}
+code{color:var(--zari)}.pc{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:10px;border-radius:14px;background:#0D0A22;margin:8px 0}.pc img{width:96px;height:96px;object-fit:cover;border-radius:10px}.pc p{margin:2px 0;word-break:break-word}
 </style></head><body>
 <div class="wrap">
 <div id="login" class="card login"><h1>🪔 Puja Map Admin</h1><p>Private dashboard. Only the configured admin email can access visitor data.</p><input id="email" type="email" placeholder="Admin email" style="width:100%;box-sizing:border-box;margin:4px 0"><input id="password" type="password" placeholder="Password" style="width:100%;box-sizing:border-box;margin:4px 0"><button id="loginBtn">Sign in</button><p id="loginMsg"></p></div>
@@ -36,13 +36,17 @@ code{color:var(--zari)}
 <div class="stats"><div class="card stat">🟢 Live now<b id="live">0</b><small>last 90 seconds</small></div><div class="card stat">👥 Seen<b id="total">0</b><small>unique visitor codes</small></div><div class="card stat">🎙️ Audio<b id="audio">0</b><small>currently marked playing</small></div><div class="card stat">📱 Mobile<b id="mobile">0</b><small>of live visitors</small></div></div>
 
 <div id="chatPanel">
-<div class="stats5"><div class="card stat">💬 Chat IDs<b id="cAll">0</b><small>created</small></div><div class="card stat">✅ Active<b id="cActive">0</b><small>not expired</small></div><div class="card stat">🟢 Online<b id="cOnline">0</b><small>last 2 minutes</small></div><div class="card stat">✉️ Messages<b id="cPosts">0</b><small>not deleted</small></div><div class="card stat">🚩 Reports<b id="cReports">0</b><small>to review</small></div></div>
+<div class="stats5"><div class="card stat">💬 Chat IDs<b id="cAll">0</b><small id="cTiers">created</small></div><div class="card stat">✅ Active<b id="cActive">0</b><small>not expired</small></div><div class="card stat">🟢 Online<b id="cOnline">0</b><small>last 2 minutes</small></div><div class="card stat">✉️ Messages<b id="cPosts">0</b><small>not deleted</small></div><div class="card stat">🚩 Reports<b id="cReports">0</b><small>to review</small></div></div>
 <div class="card"><h2>Create chat ID (after payment)</h2><p><small>Create the ID, copy it, and send it to the member on WhatsApp. It works as soon as it is created. Each ID works on 2 devices.</small></p>
 <div class="row"><input id="cNick" placeholder="Nickname (optional: member can choose)" maxlength="24"><input id="cNote" placeholder="Note: payment ref / phone (only you see this)" maxlength="300"></div>
 <div class="row"><label for="cUntil"><small>Valid until</small></label><input id="cUntil" type="date" value="2026-11-05" style="flex:none;min-width:0"><button id="cCreate">Create &amp; activate</button></div><p id="cMsg" class="danger"></p>
 <div class="idbox" id="cBox"><small>New ID</small><div class="code" id="cCode"></div><div class="row"><button class="btn2" id="cCopy">Copy</button><a class="btn2" id="cWa" target="_blank" rel="noopener">Send on WhatsApp</a></div></div></div>
+<div class="card"><h2>Free chat window</h2><p><small>Anyone can create their own free ID until this date and time (IST). After that only paid IDs you create work. Changing it also moves every free ID's expiry.</small></p>
+<div class="row"><small id="fuNow">…</small><input id="fuInput" type="datetime-local" style="flex:none;min-width:0"><button class="btn2" id="fuSave">Save</button></div><p id="fuMsg" class="danger"></p></div>
+<div class="card"><h2>Community pujas</h2><p><small>Visitors add pujas with a photo and location. They appear in the app only after you approve them.</small></p>
+<div class="row"><select id="pStatus" style="padding:10px;border-radius:999px;background:var(--raise);color:var(--ink);border:1px solid var(--line)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="">All</option></select><small id="pCounts"></small></div><p id="pMsg" class="danger"></p><div id="pList"><small>Nothing here.</small></div></div>
 <div class="card"><h2>Reports</h2><div id="cReps"><small>No reports.</small></div></div>
-<div class="card"><h2>Members</h2><div class="row"><input id="cQ" placeholder="Search ID, name or note"><button class="btn2" id="cSearch">Search</button></div><div class="table"><table><thead><tr><th>ID</th><th>Name</th><th>Note</th><th>Status</th><th>Valid until</th><th>Devices</th><th>Posts</th><th>Last seen</th><th>Actions</th></tr></thead><tbody id="cRows"></tbody></table></div></div>
+<div class="card"><h2>Members</h2><div class="row"><input id="cQ" placeholder="Search ID, name or note"><button class="btn2" id="cSearch">Search</button></div><div class="table"><table><thead><tr><th>ID</th><th>Name</th><th>Tier</th><th>Note</th><th>Status</th><th>Valid until</th><th>Devices</th><th>Posts</th><th>Last seen</th><th>Actions</th></tr></thead><tbody id="cRows"></tbody></table></div></div>
 </div>
 <div class="card"><h2>Live visitors</h2><p><small>IP address is server-observed. Location below is only shown if the visitor explicitly grants browser location permission. MAC address is not available to normal websites.</small></p><div class="table"><table><thead><tr><th>Visitor code</th><th>Device</th><th>IP</th><th>Page</th><th>Audio</th><th>Location</th><th>Last seen</th></tr></thead><tbody id="rows"></tbody></table></div></div></div></div>
 <script>
@@ -68,14 +72,14 @@ $('loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({
     const q=($('cQ').value||'').trim();
     const [l,r]=await Promise.all([sb.rpc('admin_chat_list',{p_q:q||null}),sb.rpc('admin_chat_reports')]);
     if(l.error){$('cMsg').textContent=l.error.message==='Not an admin'?'Not an admin.':('Chat tables missing? Run supabase-chat.sql. ('+l.error.message+')');return}
-    const t=l.data.totals||{};$('cAll').textContent=t.all||0;$('cActive').textContent=t.active||0;$('cOnline').textContent=t.online||0;$('cPosts').textContent=t.posts||0;$('cReports').textContent=t.reports||0;
+    const t=l.data.totals||{};$('cAll').textContent=t.all||0;$('cTiers').textContent=(t.free||0)+' free · '+(t.paid||0)+' paid';$('cActive').textContent=t.active||0;$('cOnline').textContent=t.online||0;$('cPosts').textContent=t.posts||0;$('cReports').textContent=t.reports||0;
     $('cRows').innerHTML=(l.data.members||[]).map(m=>{
       const st=m.expired?'expired':m.status;
-      return '<tr><td><b>'+esc(m.code)+'</b></td><td>'+esc(m.nickname||'—')+'</td><td>'+esc(m.note||'')+'</td><td><span class="pill '+esc(st)+'">'+esc(st)+'</span></td><td>'+fmtD(m.expires_at)+'</td><td>'+m.devices+'/2</td><td>'+m.posts+'</td><td>'+fmt(m.last_seen)+'</td><td>'+
+      return '<tr><td><b>'+esc(m.code)+'</b></td><td>'+esc(m.nickname||'—')+'</td><td><span class="pill '+(m.tier==='free'?'muted':'active')+'">'+esc(m.tier||'paid')+'</span></td><td>'+esc(m.note||'')+'</td><td><span class="pill '+esc(st)+'">'+esc(st)+'</span></td><td>'+fmtD(m.expires_at)+'</td><td>'+m.devices+'/2</td><td>'+m.posts+'</td><td>'+fmt(m.last_seen)+'</td><td>'+
         (m.status==='muted'?'<button class="btn2 ok" data-a="active" data-id="'+m.id+'">Unmute</button> ':'<button class="btn2" data-a="muted" data-id="'+m.id+'">Mute</button> ')+
         (m.status==='blocked'?'<button class="btn2 ok" data-a="active" data-id="'+m.id+'">Unblock</button> ':'<button class="btn2 warn" data-a="blocked" data-id="'+m.id+'">Block</button> ')+
         '<button class="btn2" data-a="extend" data-id="'+m.id+'" data-exp="'+esc(m.expires_at)+'">+7 days</button> <button class="btn2" data-a="reset" data-id="'+m.id+'">Reset devices</button></td></tr>';
-    }).join('')||'<tr><td colspan="9">No members yet.</td></tr>';
+    }).join('')||'<tr><td colspan="10">No members yet.</td></tr>';
     const reps=r.data||[];
     $('cReps').innerHTML=reps.length?reps.map(x=>'<div class="rep"><small>'+esc(x.nickname)+' · '+esc(x.code)+' · room '+esc(x.room)+' · '+fmt(x.created_at)+(x.reason?' · reason: '+esc(x.reason):'')+'</small><p>'+esc(x.body)+'</p>'+
       '<button class="btn2 warn" data-r="del" data-post="'+x.post_id+'">Delete message</button> <button class="btn2" data-r="ok" data-post="'+x.post_id+'">Dismiss</button> <button class="btn2 warn" data-r="block" data-post="'+x.post_id+'" data-member="'+x.member_id+'">Delete &amp; block member</button></div>').join(''):'<small>No reports.</small>';
@@ -104,6 +108,38 @@ $('loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({
   });
   const _load=load;load=async function(){await _load();if($('app').style.display!=='none')chatLoad()};
   setTimeout(()=>{if($('app').style.display!=='none')chatLoad()},1500);
+})();
+</script>
+<script>
+/* ---- free window + community pujas (admin) ---- */
+(function(){
+  const fmt=d=>d?new Date(d).toLocaleString([], {weekday:'short',day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+  async function freeLoad(){
+    const r=await sb.rpc('chat_info');if(r.error||!r.data)return;
+    $('fuNow').textContent='Free until '+fmt(r.data.free_until)+(r.data.free_open?' (open)':' (closed)');
+    if(!$('fuInput').dataset.set){const d=new Date(new Date(r.data.free_until).getTime()+19800000);$('fuInput').value=d.toISOString().slice(0,16);$('fuInput').dataset.set='1'}
+  }
+  $('fuSave').onclick=async()=>{
+    $('fuMsg').textContent='';const v=$('fuInput').value;if(!v){$('fuMsg').textContent='Pick a date and time.';return}
+    const {error}=await sb.rpc('admin_chat_set_free_until',{p_until:v+':00+05:30'});
+    if(error){$('fuMsg').textContent=error.message;return}$('fuInput').dataset.set='';freeLoad();if(window.chatLoad)chatLoad();
+  };
+  async function pujaLoad(){
+    const st=$('pStatus').value;const {data,error}=await sb.rpc('admin_puja_list',{p_status:st||null});
+    if(error){$('pMsg').textContent='Community pujas: run supabase-pujas.sql ('+error.message+')';return}$('pMsg').textContent='';
+    const c=data.counts||{};$('pCounts').textContent='Pending '+(c.pending||0)+' · Approved '+(c.approved||0)+' · Rejected '+(c.rejected||0);
+    $('pList').innerHTML=(data.pujas||[]).map(x=>'<div class="pc"><a href="'+esc(x.photo_url)+'" target="_blank" rel="noopener"><img alt="" src="'+esc(x.photo_url)+'"></a><div><b>'+esc(x.name)+'</b> <span class="pill '+esc(x.status==='approved'?'active':x.status==='rejected'?'blocked':'muted')+'">'+esc(x.status)+'</span>'+
+      (x.note?'<p>'+esc(x.note)+'</p>':'')+(x.address?'<p><small>'+esc(x.address)+'</small></p>':'')+'<p><small>by '+esc(x.nickname||'anonymous')+' · '+esc(x.ip||'')+' · '+fmt(x.created_at)+' · <a href="https://www.google.com/maps/search/?api=1&query='+x.lat+','+x.lon+'" target="_blank" rel="noopener">map</a></small></p>'+
+      (x.status!=='approved'?'<button class="btn2 ok" data-p="approved" data-id="'+x.id+'">Approve</button> ':'')+(x.status!=='rejected'?'<button class="btn2 warn" data-p="rejected" data-id="'+x.id+'">Reject</button> ':'')+'<button class="btn2 warn" data-p="delete" data-id="'+x.id+'">Delete</button></div></div>').join('')||'<small>Nothing here.</small>';
+  }
+  $('pStatus').onchange=pujaLoad;
+  $('pList').addEventListener('click',async e=>{
+    const b=e.target.closest('[data-p]');if(!b)return;const id=b.dataset.id,a=b.dataset.p;
+    if(a==='delete'&&!confirm('Delete this puja permanently?'))return;
+    const r=a==='delete'?await sb.rpc('admin_puja_delete',{p_id:id}):await sb.rpc('admin_puja_set',{p_id:id,p_status:a});
+    if(r.error){alert(r.error.message);return}pujaLoad();
+  });
+  const _cl=window.chatLoad;window.chatLoad=async function(){await _cl();pujaLoad();freeLoad()};
 })();
 </script>
 </body></html>

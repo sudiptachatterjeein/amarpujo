@@ -20,7 +20,7 @@ window.PUJA_CONFIG = {
   // CHAT_CONTACT_URL: where people send the payment screenshot, e.g. "https://wa.me/91XXXXXXXXXX" or "mailto:you@example.com" or "https://t.me/yourname" ("" hides the button).
   CHAT_PAY_URL: "https://www.buymeachai.in/sudiptachatterjee.work",
   CHAT_PRICE_LABEL: "",
-  CHAT_CONTACT_URL: "https://wa.me/918336939055",
+  CHAT_CONTACT_URL: "",
 
   // Live weather (Open-Meteo, free, no key). Kolkata centre.
   WEATHER_LAT: 22.5726,

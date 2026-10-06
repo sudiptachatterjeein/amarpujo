@@ -26,7 +26,8 @@
     from: '',               // metro station used as the start for metro-route links
     cur: -1,                // pandal shown in the detail sheet
     mapSel: -1,             // pandal selected on the map
-    routeTab: 'route',
+    routeTab: 'route', ex: 'official',
+    theme: PM.store.get('puja26_theme', 'night') === 'laal' ? 'laal' : 'night',
     big: PM.store.get('puja26_big', '0') === '1',
     checked: PM.store.json('puja26_checked', {})
   };
@@ -64,6 +65,16 @@
     document.documentElement.lang = lang === 'bn' ? 'bn' : 'en';
     document.title = PM.t('app_title');
   };
+
+  /* ---------- theme: Pujo Night (dark, default) and Laal Paar (light) ---------- */
+  PM.applyTheme = function (t) {
+    PM.st.theme = t === 'laal' ? 'laal' : 'night';
+    if (PM.st.theme === 'laal') document.documentElement.setAttribute('data-theme', 'laal'); else document.documentElement.removeAttribute('data-theme');
+    var light = PM.st.theme === 'laal', m = document.querySelector('meta[name="theme-color"]'), cs = document.querySelector('meta[name="color-scheme"]');
+    if (m) m.setAttribute('content', light ? '#FBF4E8' : '#120E2B'); if (cs) cs.setAttribute('content', light ? 'light' : 'dark');
+    try { if (window.PujaNative && window.PujaNative.setTheme) window.PujaNative.setTheme(light); } catch (e) {}
+  };
+  PM.setTheme = function (t) { PM.store.set('puja26_theme', t === 'laal' ? 'laal' : 'night'); PM.applyTheme(t); };
 
   /* ---------- icons ---------- */
   PM.ic = function (name, cls) {

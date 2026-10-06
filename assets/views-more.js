@@ -20,7 +20,9 @@
     var el = document.getElementById('v-more'); if (!el) return;
     var sc = el.scrollTop, standalone = window.matchMedia && matchMedia('(display-mode: standalone)').matches;
     var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    el.innerHTML = PM.vhead(T('tab_more')) + '</header><div class="pad">' + PM.chatCard() +
+    el.innerHTML = PM.vhead(T('tab_more')) + '</header><div class="pad">' + PM.chatCard() + PM.pujaCard() +
+      '<section class="block card"><div class="block-h"><h2>' + PM.ic('palette') + T('theme_title') + '</h2></div><div class="themes">' +
+      ['night', 'laal'].map(function (k) { return '<button class="theme-opt' + (PM.st.theme === k ? ' on' : '') + '" data-act="theme" data-t="' + k + '" aria-pressed="' + (PM.st.theme === k) + '"><span class="sw sw-' + k + '"><i></i><i></i><i></i></span><b>' + T('theme_' + k) + '</b><small>' + T('theme_' + k + '_d') + '</small></button>'; }).join('') + '</div></section>' +
       '<section class="block card"><div class="block-h"><h2>' + PM.ic('globe') + T('language') + '</h2></div>' + PM.langSwitch().replace('seg lang', 'seg lang big') + '<p class="fine">' + T('lang_note') + '</p></section>' +
       '<section class="block card sos"><div class="block-h"><h2>' + PM.ic('alert') + T('emergency') + '</h2></div>' + sosList() + '</section>' +
       '<section class="block"><div class="block-h"><h2>' + T('guides') + '</h2></div>' +
@@ -69,6 +71,8 @@
   PM.acts['clear-loc'] = function () { PM.store.set('puja26_lat', ''); PM.store.set('puja26_lon', ''); PM.toast(T('loc_cleared')); PM.renderMore(); };
   PM.acts.install = function () { if (installEvt) { installEvt.prompt(); installEvt = null; } };
   PM.acts['text-size'] = function (el) { PM.st.big = el.getAttribute('data-b') === '1'; PM.store.set('puja26_big', PM.st.big ? '1' : '0'); document.documentElement.classList.toggle('big', PM.st.big); PM.renderMore(); };
+  PM.acts.theme = function (el) { PM.setTheme(el.getAttribute('data-t')); PM.toast(T('theme_set')); PM.rerenderAll(); };
+  PM.acts['theme-toggle'] = function () { PM.setTheme(PM.st.theme === 'laal' ? 'night' : 'laal'); PM.toast(T('theme_set')); PM.rerenderAll(); };
   PM.acts.lang = function (el) { var l = el.getAttribute('data-l'); if (l !== PM.st.lang) { PM.setLang(l); PM.rerenderAll(); } };
   PM.acts.goto = function (el) {
     var tab = el.getAttribute('data-tab');

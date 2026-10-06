@@ -46,7 +46,7 @@
     if (B.GL.length) h += '<g class="mline">' + pl(B.GL, 'var(--green)', 10) + '</g>';
     PM.SS.filter(function (s) { return s[4] === PM.st.rg; }).forEach(function (s) {
       var col = s[3] === 'g' ? 'var(--green)' : 'var(--blue)';
-      h += '<g class="stn"><rect x="' + (s[1] - 11) + '" y="' + (s[2] - 11) + '" width="22" height="22" rx="6" fill="#0D0A22" stroke="' + col + '" stroke-width="4.5"/>' +
+      h += '<g class="stn"><rect x="' + (s[1] - 11) + '" y="' + (s[2] - 11) + '" width="22" height="22" rx="6" fill="var(--map-bg)" stroke="' + col + '" stroke-width="4.5"/>' +
         '<text x="' + s[1] + '" y="' + (s[2] + 5) + '" text-anchor="middle" class="stn-m">M</text>' +
         '<text class="slab" x="' + (s[1] + 17) + '" y="' + (s[2] + 33) + '">' + PM.esc(PM.sn(s[0])) + '</text></g>';
     });

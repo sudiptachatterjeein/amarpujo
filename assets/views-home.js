@@ -149,8 +149,13 @@
     return '<section class="block"><div class="block-h"><h2>' + T('quick_plans') + '</h2></div><div class="hscroll">' + cards + '</div></section>';
   }
   PM.chatCard = function () {
-    return '<section class="chatcard" data-act="chat-open" role="button" tabindex="0"><span class="cc-ic">' + PM.ic('chat') + '</span><span class="cc-t"><b>' + T('chat_card_t') + '</b><span>' + T('chat_card_d') + '</span></span>' +
-      '<span class="btn primary sm">' + T('chat_open') + '</span></section>';
+    var info = PM.chat && PM.chat.info, free = info && info.free_open && info.free_until ? T('chat_card_free', { d: PM.fmtDay(Date.parse(info.free_until)) }) : '';
+    return '<section class="chatcard" data-act="chat-open" role="button" tabindex="0"><span class="cc-ic">' + PM.ic('chat') + '</span><span class="cc-t"><b>' + T('chat_card_t') + '</b><span>' + T('chat_card_d') + '</span>' +
+      (free ? '<span class="badge gold">' + PM.esc(free) + '</span>' : '') + '</span><span class="btn primary sm">' + T('chat_open') + '</span></section>';
+  };
+  PM.themeBtn = function () {
+    var light = PM.st.theme === 'laal';
+    return '<button class="theme-btn" data-act="theme-toggle" aria-label="' + PM.esc(T('theme_title')) + '">' + PM.ic(light ? 'moon' : 'sun') + '</button>';
   };
   function quickActions() {
     var a = [
@@ -164,8 +169,8 @@
     var el = document.getElementById('v-home'); if (!el) return;
     var scroll = el.scrollTop;
     el.innerHTML = '<header class="vhead home-head"><div class="hh-l"><span class="logo">' + PM.ic('diya') + '</span><div><div class="hh-hi">' + greeting() + '</div>' +
-      '<div class="hh-sub">' + T('app_name') + ' · ' + PM.fmtDay(Date.now()) + '</div></div></div><div class="hh-r">' + PM.langSwitch() + '</div></header>' +
-      '<div class="pad">' + wxHero() + rail() + mahalaya() + PM.chatCard() + mustSee() + plansBlock() + quickActions() +
+      '<div class="hh-sub">' + PM.fmtDay(Date.now()) + '</div></div></div><div class="hh-r">' + PM.themeBtn() + PM.langSwitch() + '</div></header>' +
+      '<div class="pad">' + wxHero() + rail() + mahalaya() + PM.chatCard() + PM.pujaCard() + mustSee() + plansBlock() + quickActions() +
       '<p class="fine foot">' + T('crafted') + ' <b>Sudipta Chatterjee</b></p></div>';
     el.scrollTop = scroll;
   };

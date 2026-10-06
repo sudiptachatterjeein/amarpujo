@@ -86,7 +86,7 @@
   PM.acts['splash-skip'] = hideSplash;
 
   function init() {
-    PM.setLang(PM.st.lang);
+    PM.setLang(PM.st.lang); PM.applyTheme(PM.st.theme);
     document.documentElement.classList.toggle('big', PM.st.big);
     PM.sheet.init();
     PM.map.mount(document.getElementById('v-map'));
@@ -101,6 +101,7 @@
     if (seen) { var sp = document.getElementById('splash'); if (sp) sp.remove(); } else setTimeout(hideSplash, 1500);
 
     // live data
+    PM.chatInfo(); setInterval(PM.chatInfo, 10 * 60 * 1000);
     PM.loadWeather(false);
     setInterval(function () { PM.loadWeather(true); }, 10 * 60 * 1000);
     document.addEventListener('visibilitychange', function () {

@@ -14,6 +14,13 @@ create table if not exists public.chat_members (
   expires_at timestamptz not null,
   last_seen timestamptz
 );
+alter table public.chat_members add column if not exists tier text not null default 'paid' check (tier in ('free','paid'));
+alter table public.chat_members add column if not exists created_ip text;
+create index if not exists chat_members_ip on public.chat_members(created_ip, created_at);
+create table if not exists public.app_settings (key text primary key, value text not null);
+alter table public.app_settings enable row level security;
+-- Chat is FREE (self-created IDs) until this moment. Change it any time from the admin page.
+insert into public.app_settings(key, value) values ('chat_free_until', '2026-10-09T23:59:59+05:30') on conflict (key) do nothing;
 create table if not exists public.chat_devices (
   member_id uuid not null references public.chat_members(id) on delete cascade,
   device_id text not null,
@@ -75,7 +82,7 @@ begin
     insert into public.chat_attempts(ip) values (v_ip); err := 'invalid_id'; m := null; return;
   end if;
   if m.status = 'blocked' then err := 'blocked'; m := null; return; end if;
-  if m.expires_at < now() then err := 'expired'; m := null; return; end if;
+  if m.expires_at < now() then err := 'expired'; return; end if;
   if p_device is null or char_length(p_device) not between 8 and 100 then err := 'bad_device'; m := null; return; end if;
   if not exists (select 1 from public.chat_devices where member_id = m.id and device_id = p_device) then
     select count(*) into n from public.chat_devices where member_id = m.id;
@@ -100,16 +107,16 @@ returns jsonb language plpgsql security definer set search_path = public as $$
 declare a record; m public.chat_members; nick text := btrim(coalesce(p_nick,''));
 begin
   select * into a from public._chat_auth(p_code, p_device);
-  if a.err is not null then return jsonb_build_object('ok', false, 'error', a.err); end if;
+  if a.err is not null then return jsonb_build_object('ok', false, 'error', a.err, 'tier', case when a.err = 'expired' then (a.m).tier end); end if;
   m := a.m;
   if m.nickname is null or m.nickname = '' then
-    if nick = '' then return jsonb_build_object('ok', true, 'need_name', true, 'expires_at', m.expires_at); end if;
+    if nick = '' then return jsonb_build_object('ok', true, 'need_name', true, 'expires_at', m.expires_at, 'tier', m.tier); end if;
     if char_length(nick) not between 2 and 24 or nick ~ '[<>]' or not public._chat_clean_text(nick) then
       return jsonb_build_object('ok', false, 'error', 'bad_name');
     end if;
     update public.chat_members set nickname = nick where id = m.id; m.nickname := nick;
   end if;
-  return jsonb_build_object('ok', true, 'nickname', m.nickname, 'status', m.status, 'expires_at', m.expires_at);
+  return jsonb_build_object('ok', true, 'nickname', m.nickname, 'status', m.status, 'expires_at', m.expires_at, 'tier', m.tier);
 end $$;
 
 create or replace function public.chat_fetch(p_code text, p_device text, p_room text, p_after bigint default 0)
@@ -169,6 +176,53 @@ begin
   return jsonb_build_object('ok', true);
 end $$;
 
+-- ---------- free chat window + self-created IDs ----------
+create or replace function public._chat_free_until() returns timestamptz language sql stable security definer set search_path = public as $$
+  select coalesce((select value::timestamptz from public.app_settings where key = 'chat_free_until'), timestamptz '2026-10-09 23:59:59+05:30');
+$$;
+
+create or replace function public.chat_info() returns jsonb language sql stable security definer set search_path = public as $$
+  select jsonb_build_object('free_until', public._chat_free_until(), 'free_open', now() <= public._chat_free_until(), 'now', now());
+$$;
+
+create or replace function public._chat_new_code() returns text language plpgsql volatile security definer set search_path = public as $$
+declare alpha text := '23456789ABCDEFGHJKMNPQRSTUVWXYZ'; raw bytea; v text; i int; tries int := 0;
+begin
+  loop
+    raw := decode(replace(gen_random_uuid()::text || gen_random_uuid()::text, '-', ''), 'hex');
+    v := 'PJ-';
+    for i in 0..9 loop
+      v := v || substr(alpha, (get_byte(raw, i) % 31) + 1, 1);
+      if i = 4 then v := v || '-'; end if;
+    end loop;
+    exit when not exists (select 1 from public.chat_members m0 where m0.code = v);
+    tries := tries + 1; if tries > 10 then raise exception 'Could not generate a unique ID'; end if;
+  end loop;
+  return v;
+end $$;
+
+-- Anyone can create their own FREE ID while the free window is open. One per device, 5 per connection per day.
+create or replace function public.chat_self_create(p_device text, p_nick text)
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare nick text := btrim(coalesce(p_nick,'')); v_ip text := public._chat_ip(); ex public.chat_members; m public.chat_members; fu timestamptz := public._chat_free_until(); c text;
+begin
+  if now() > fu then return jsonb_build_object('ok', false, 'error', 'free_closed'); end if;
+  if p_device is null or char_length(p_device) not between 8 and 100 then return jsonb_build_object('ok', false, 'error', 'bad_device'); end if;
+  select mm.* into ex from public.chat_members mm join public.chat_devices d on d.member_id = mm.id
+    where d.device_id = p_device and mm.tier = 'free' and mm.status <> 'blocked' and mm.expires_at > now() order by mm.created_at limit 1;
+  if found then
+    return jsonb_build_object('ok', true, 'existing', true, 'code', ex.code, 'nickname', ex.nickname, 'expires_at', ex.expires_at);
+  end if;
+  if char_length(nick) not between 2 and 24 or nick ~ '[<>]' or not public._chat_clean_text(nick) then return jsonb_build_object('ok', false, 'error', 'bad_name'); end if;
+  if (select count(*) from public.chat_members where created_ip = v_ip and tier = 'free' and created_at > now() - interval '1 day') >= 5 then
+    return jsonb_build_object('ok', false, 'error', 'too_many');
+  end if;
+  c := public._chat_new_code();
+  insert into public.chat_members(code, nickname, note, expires_at, tier, created_ip) values (c, nick, 'self-created (free)', fu, 'free', v_ip) returning * into m;
+  insert into public.chat_devices(member_id, device_id) values (m.id, p_device);
+  return jsonb_build_object('ok', true, 'existing', false, 'code', c, 'nickname', nick, 'expires_at', fu);
+end $$;
+
 -- ---------- admin functions (only emails listed in public.admins) ----------
 create or replace function public.admin_chat_create(p_nickname text default null, p_note text default null, p_expires timestamptz default null)
 returns jsonb language plpgsql security definer set search_path = public as $$
@@ -195,7 +249,7 @@ declare rows jsonb; q text := nullif(btrim(coalesce(p_q,'')), '');
 begin
   if not public._is_admin() then raise exception 'Not an admin'; end if;
   select coalesce(jsonb_agg(x), '[]'::jsonb) into rows from (
-    select m.id, m.code, m.nickname, m.note, m.status, m.created_at, m.expires_at, m.last_seen,
+    select m.id, m.code, m.nickname, m.note, m.status, m.tier, m.created_at, m.expires_at, m.last_seen,
            (m.expires_at < now()) as expired,
            (select count(*) from public.chat_devices d where d.member_id = m.id) as devices,
            (select count(*) from public.chat_posts p where p.member_id = m.id) as posts
@@ -205,6 +259,8 @@ begin
   return jsonb_build_object('members', rows,
     'totals', jsonb_build_object('all', (select count(*) from public.chat_members),
       'active', (select count(*) from public.chat_members where status = 'active' and expires_at >= now()),
+      'free', (select count(*) from public.chat_members where tier = 'free'),
+      'paid', (select count(*) from public.chat_members where tier = 'paid'),
       'online', (select count(*) from public.chat_members where last_seen > now() - interval '2 minutes'),
       'posts', (select count(*) from public.chat_posts where not deleted),
       'reports', (select count(*) from public.chat_reports where not resolved)));
@@ -242,11 +298,23 @@ begin
   return jsonb_build_object('ok', true);
 end $$;
 
+create or replace function public.admin_chat_set_free_until(p_until timestamptz)
+returns jsonb language plpgsql security definer set search_path = public as $$
+begin
+  if not public._is_admin() then raise exception 'Not an admin'; end if;
+  insert into public.app_settings(key, value) values ('chat_free_until', to_char(p_until at time zone 'Asia/Kolkata', 'YYYY-MM-DD"T"HH24:MI:SS') || '+05:30')
+    on conflict (key) do update set value = excluded.value;
+  update public.chat_members set expires_at = p_until where tier = 'free';       -- free IDs follow the new end date
+  return jsonb_build_object('ok', true, 'free_until', p_until);
+end $$;
+
 -- ---------- who may call what ----------
 revoke all on function public._chat_ip() from public, anon, authenticated;
 revoke all on function public._chat_auth(text,text) from public, anon, authenticated;
 revoke all on function public._chat_clean_text(text) from public, anon, authenticated;
 revoke all on function public._is_admin() from public, anon, authenticated;
+revoke all on function public._chat_free_until() from public, anon, authenticated;
+revoke all on function public._chat_new_code() from public, anon, authenticated;
 revoke all on function public.chat_login(text,text,text) from public;
 revoke all on function public.chat_fetch(text,text,text,bigint) from public;
 revoke all on function public.chat_send(text,text,text,text) from public;
@@ -267,3 +335,10 @@ grant execute on function public.admin_chat_list(text) to authenticated;
 grant execute on function public.admin_chat_update(uuid,text,timestamptz,text,boolean,text) to authenticated;
 grant execute on function public.admin_chat_reports() to authenticated;
 grant execute on function public.admin_chat_moderate(bigint,boolean) to authenticated;
+
+revoke all on function public.chat_info() from public;
+revoke all on function public.chat_self_create(text,text) from public;
+grant execute on function public.chat_info() to anon, authenticated;
+grant execute on function public.chat_self_create(text,text) to anon, authenticated;
+revoke all on function public.admin_chat_set_free_until(timestamptz) from public, anon;
+grant execute on function public.admin_chat_set_free_until(timestamptz) to authenticated;

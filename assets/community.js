@@ -22,6 +22,7 @@
     });
   }
   PM.rpc = rpc;
+  PM.sbHeaders = sbHeaders;
 
   /* Shrink a chosen photo to a small JPEG before upload (bucket limit is 3 MB). */
   function resizeToBlob(file, maxDim, quality) {
@@ -44,6 +45,7 @@
     });
   }
 
+  PM.resizeToBlob = resizeToBlob;
   PM.clientId = function () {
     var x = PM.store.get('puja26_client_id', '');
     if (!x) {
