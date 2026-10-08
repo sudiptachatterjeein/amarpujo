@@ -4,7 +4,7 @@ Static site + small Vercel functions. Deploy on **Vercel** (no build step). Data
 
 ## What is new in this version
 1. **Two Durga Puja themes**: *Pujo Night* (dark, default) and *Laal Paar* (light: ivory white with vermilion red, like a red-bordered saree). Switch with the sun/moon button on Home, or More > Theme. The choice is remembered.
-2. **Free chat until 9 Oct 11:59 PM IST**: anyone can create a free account in the app with a nickname, **mobile number and a 4-6 digit PIN**, and sign in again on any phone with the same number and PIN. After the end date only paid IDs you create in the admin page work. You can move the end date from the admin page.
+2. **Free chat until 16 Oct 11:59 PM IST**: anyone can create a free account in the app with a nickname, **mobile number and a 4-6 digit PIN**, and sign in again on any phone with the same number and PIN. After the end date only paid IDs you create in the admin page work. You can move the end date from the admin page.
 3. **Add your puja**: visitors add a puja with name, location (GPS or Google Maps link) and a photo. It appears in Explore > Community pujas only after you approve it in the admin page.
 
 ## Files (all at the ROOT of your GitHub repo)
@@ -35,7 +35,7 @@ Upload the CONTENTS of this folder (not an extra outer folder) and commit. Verce
 
 ## 5. Check it works
 - Home: theme button (sun/moon) switches the whole app between dark and light.
-- Home > Puja Adda card shows "Free until Fri 9 Oct". Open it: *Create account* (nickname, mobile number, PIN) and you are in the chat. On another phone use *Sign in* with the same number and PIN.
+- Home > Puja Adda card shows "Free until Fri 16 Oct". Open it: *Create account* (nickname, mobile number, PIN) and you are in the chat. On another phone use *Sign in* with the same number and PIN.
 - Explore > Community pujas > Add your puja: fill the form with a photo and location. Then approve it in /admin and it appears.
 
 ## Notes

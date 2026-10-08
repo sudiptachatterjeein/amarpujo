@@ -26,7 +26,11 @@ create index if not exists chat_members_ip on public.chat_members(created_ip, cr
 create table if not exists public.app_settings (key text primary key, value text not null);
 alter table public.app_settings enable row level security;
 -- Chat is FREE (self-created IDs) until this moment. Change it any time from the admin page.
-insert into public.app_settings(key, value) values ('chat_free_until', '2026-10-09T23:59:59+05:30') on conflict (key) do nothing;
+insert into public.app_settings(key, value) values ('chat_free_until', '2026-10-16T23:59:59+05:30') on conflict (key) do nothing;
+-- Free chat was extended from 9 Oct to 16 Oct. If the setting still holds the old default, move it (and the free accounts) forward.
+-- A date you chose yourself in the admin page is never touched.
+update public.app_settings set value = '2026-10-16T23:59:59+05:30' where key = 'chat_free_until' and value = '2026-10-09T23:59:59+05:30';
+update public.chat_members set expires_at = timestamptz '2026-10-16 23:59:59+05:30' where tier = 'free' and expires_at = timestamptz '2026-10-09 23:59:59+05:30';
 create table if not exists public.chat_devices (
   member_id uuid not null references public.chat_members(id) on delete cascade,
   device_id text not null,
@@ -184,7 +188,7 @@ end $$;
 
 -- ---------- free chat window + self-created IDs ----------
 create or replace function public._chat_free_until() returns timestamptz language sql stable security definer set search_path = public as $$
-  select coalesce((select value::timestamptz from public.app_settings where key = 'chat_free_until'), timestamptz '2026-10-09 23:59:59+05:30');
+  select coalesce((select value::timestamptz from public.app_settings where key = 'chat_free_until'), timestamptz '2026-10-16 23:59:59+05:30');
 $$;
 
 create or replace function public.chat_info() returns jsonb language sql stable security definer set search_path = public as $$
