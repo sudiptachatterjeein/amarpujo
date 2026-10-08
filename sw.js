@@ -1,7 +1,7 @@
 /* Puja Map 2026 service worker: app shell works offline; live APIs are never cached. Bump VERSION on each release. */
-const VERSION = 'puja26-v5';
-const SHELL = ['/', '/index.html', '/assets/app.css?v=5', '/assets/data.js?v=5', '/assets/config.js?v=5', '/assets/i18n.js?v=5', '/assets/core.js?v=5', '/assets/weather.js?v=5',
-  '/assets/community.js?v=5', '/assets/mahalaya.js?v=5', '/assets/chat.js?v=5', '/assets/pujas.js?v=5', '/assets/support-qr.png', '/assets/map.js?v=5', '/assets/views-home.js?v=5', '/assets/views-explore.js?v=5', '/assets/views-route.js?v=5', '/assets/views-more.js?v=5', '/assets/main.js?v=5',
+const VERSION = 'puja26-v6';
+const SHELL = ['/', '/index.html', '/assets/app.css?v=6', '/assets/data.js?v=6', '/assets/config.js?v=6', '/assets/i18n.js?v=6', '/assets/core.js?v=6', '/assets/weather.js?v=6',
+  '/assets/community.js?v=6', '/assets/mahalaya.js?v=6', '/assets/chat.js?v=6', '/assets/pujas.js?v=6', '/assets/support-qr.png', '/assets/map.js?v=6', '/assets/views-home.js?v=6', '/assets/views-explore.js?v=6', '/assets/views-route.js?v=6', '/assets/views-more.js?v=6', '/assets/main.js?v=6',
   '/assets/favicon.svg', '/manifest.webmanifest'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));

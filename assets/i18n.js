@@ -97,7 +97,7 @@ window.PUJA_I18N = {
       mh_started: 'Mahalaya has started', mh_started_d: 'Tap to listen now.', mh_tap_start: 'Tap to start',
       back: 'Back', chat_title: 'Puja Adda', chat_menu: 'Chat options', chat_card_t: 'Puja Adda · community chat',
       chat_card_d: 'Chat with other pandal-hoppers: crowd updates, food tips, meet-ups. Members only.', chat_open: 'Open chat',
-      chat_hero_d: 'A friendly, moderated space for Puja visitors. Enter your member ID to join.',
+      chat_hero_d: 'A friendly, moderated space for Puja visitors to share crowd updates and food tips.',
       chat_id_label: 'Your ID', chat_id_ph: 'PJ-XXXXX-XXXXX', chat_start: 'Start chat', chat_no_id: "Don't have an ID?", chat_get_id: 'Get your ID',
       chat_step1: 'Pay{price} on our website.', chat_step2: 'Send us a screenshot of the payment.', chat_step3: 'We create and activate your ID and send it to you. Enter it above.',
       chat_send_shot: 'Send payment screenshot', chat_turnaround: 'IDs are usually sent within a few hours.',
@@ -116,8 +116,8 @@ window.PUJA_I18N = {
       chat_e_text: 'Write 1 to 300 characters.', chat_e_generic: 'Something went wrong. Please try again.', chat_e_net: 'No connection. Try again when you are online.',
       chat_or: 'or', theme_title: 'Theme', theme_night: 'Pujo Night', theme_night_d: 'Deep indigo and zari gold. Easy on the eyes after dark.', theme_laal: 'Laal Paar',
       theme_laal_d: 'Ivory white with vermilion red, like a red-bordered Puja saree. Best in daylight.', theme_set: 'Theme changed',
-      chat_card_free: 'Free until {d}', chat_free_badge: 'Free until {d}', chat_free_t: 'Create your free ID', chat_free_d: 'No payment needed. Choose a nickname and start chatting right away.',
-      chat_free_btn: 'Create my free ID', chat_free_nick_ph: 'Your nickname', chat_have_id: 'Already have an ID?', chat_paid_t: 'Want to keep chatting after {d}?',
+      chat_card_free: 'Free until {d}', chat_free_badge: 'Free until {d}', chat_free_t: 'Join free with your mobile number', chat_free_d: 'No payment needed. Create an account with a nickname, your mobile number and a PIN.',
+      chat_free_btn: 'Create my free ID', chat_free_nick_ph: 'Your nickname', chat_have_id: 'Already have an ID?', chat_have_code: 'Have an ID code (paid members)?', chat_paid_t: 'Want to keep chatting after {d}?',
       chat_free_ended: 'The free chat period has ended. A paid ID is needed to chat.', chat_newid_t: 'Your ID is ready',
       chat_newid_d: 'Save this ID. You need it to sign in again, or on another phone (max 2 devices).', chat_newid_exist: 'You already created a free ID on this phone. Here it is.',
       chat_copy: 'Copy ID', chat_copied: 'Copied', chat_enter: 'Start chatting', chat_free_room: 'Free chat ends {d}',
@@ -132,7 +132,11 @@ window.PUJA_I18N = {
       cp_e_name: 'Enter the puja name (3 to 80 characters, no links or phone numbers).', cp_e_text: 'Description and address must be short, without links or phone numbers.',
       cp_e_loc: 'Please set the location.', cp_e_far: 'That location is outside the Kolkata region.', cp_e_photo: 'Please add a photo.',
       cp_e_many: 'You have added several pujas today. Please try again tomorrow.', cp_e_generic: 'Could not send. Check your connection and try again.',
-      cp_by: 'Added by {n}', cp_open_maps: 'Open in Google Maps'
+      cp_by: 'Added by {n}', cp_open_maps: 'Open in Google Maps', chat_tab_create: 'Create account', chat_tab_signin: 'Sign in', chat_mobile_ph: '10-digit mobile number', chat_pin_ph: 'PIN (4 to 6 digits)',
+      chat_pin_note: 'Choose a PIN you will remember. You sign in with your mobile number and this PIN, on any phone.', chat_signup_btn: 'Create free account', chat_signin_btn: 'Sign in',
+      chat_phone_privacy: 'Your number is used only to sign you in. Other members never see it.',
+      chat_e_phone: 'Enter a valid 10-digit mobile number.', chat_e_pin: 'Choose a PIN of 4 to 6 digits.', chat_e_taken: 'This number is already registered. Tap Sign in.',
+      chat_e_creds: 'Mobile number or PIN is not correct.', chat_e_locked: 'Too many wrong PINs. Try again in 15 minutes.', chat_e_setup: 'Chat is being set up. Please try again in a few minutes.'
     },
     bn: {
       app_title: 'দুর্গাপূজা ২০২৬ · কলকাতার প্যান্ডেল ও মেট্রো ম্যাপ', app_name: 'পুজো ম্যাপ ২০২৬',
@@ -229,7 +233,7 @@ window.PUJA_I18N = {
       mh_started: 'মহালয়া শুরু হয়েছে', mh_started_d: 'এখনই শুনতে ট্যাপ করুন।', mh_tap_start: 'চালু করতে ট্যাপ করুন',
       back: 'পিছনে', chat_title: 'পুজো আড্ডা', chat_menu: 'চ্যাট অপশন', chat_card_t: 'পুজো আড্ডা · কমিউনিটি চ্যাট',
       chat_card_d: 'অন্য ঠাকুর-দেখিয়েদের সঙ্গে আড্ডা: ভিড়ের খবর, খাবারের টিপস, দেখা-সাক্ষাৎ। শুধু সদস্যদের জন্য।', chat_open: 'চ্যাট খুলুন',
-      chat_hero_d: 'পুজোয় যারা ঘুরছেন তাদের জন্য মডারেটেড, বন্ধুত্বপূর্ণ জায়গা। যোগ দিতে আপনার সদস্য আইডি লিখুন।',
+      chat_hero_d: 'পুজোয় যারা ঘুরছেন তাদের জন্য মডারেটেড, বন্ধুত্বপূর্ণ জায়গা: ভিড়ের খবর ও খাবারের টিপস ভাগ করে নিন।',
       chat_id_label: 'আপনার আইডি', chat_id_ph: 'PJ-XXXXX-XXXXX', chat_start: 'চ্যাট শুরু করুন', chat_no_id: 'আইডি নেই?', chat_get_id: 'আইডি নিন',
       chat_step1: 'আমাদের ওয়েবসাইটে পেমেন্ট করুন{price}।', chat_step2: 'পেমেন্টের স্ক্রিনশট আমাদের পাঠান।', chat_step3: 'আমরা আপনার আইডি তৈরি ও চালু করে পাঠিয়ে দেব। সেটি ওপরে লিখুন।',
       chat_send_shot: 'পেমেন্টের স্ক্রিনশট পাঠান', chat_turnaround: 'আইডি সাধারণত কয়েক ঘণ্টার মধ্যে পাঠানো হয়।',
@@ -248,8 +252,8 @@ window.PUJA_I18N = {
       chat_e_text: '১ থেকে ৩০০ অক্ষর লিখুন।', chat_e_generic: 'কিছু একটা ভুল হয়েছে। আবার চেষ্টা করুন।', chat_e_net: 'ইন্টারনেট নেই। অনলাইনে এসে আবার চেষ্টা করুন।',
       chat_or: 'অথবা', theme_title: 'থিম', theme_night: 'পুজোর রাত', theme_night_d: 'গাঢ় নীল ও জরির সোনালি। সন্ধ্যার পর চোখে আরাম।', theme_laal: 'লালপাড়',
       theme_laal_d: 'লালপাড় শাড়ির মতো সাদা আর সিঁদুর লাল। দিনের আলোয় সবচেয়ে ভালো।', theme_set: 'থিম বদলানো হয়েছে',
-      chat_card_free: '{d} পর্যন্ত বিনামূল্যে', chat_free_badge: '{d} পর্যন্ত বিনামূল্যে', chat_free_t: 'নিজের বিনামূল্যের আইডি বানান', chat_free_d: 'পেমেন্ট লাগবে না। একটি ডাকনাম বেছে নিয়ে এখনই আড্ডা শুরু করুন।',
-      chat_free_btn: 'আমার বিনামূল্যের আইডি বানান', chat_free_nick_ph: 'আপনার ডাকনাম', chat_have_id: 'আগেই আইডি আছে?', chat_paid_t: '{d} এর পরেও আড্ডা চালাতে চান?',
+      chat_card_free: '{d} পর্যন্ত বিনামূল্যে', chat_free_badge: '{d} পর্যন্ত বিনামূল্যে', chat_free_t: 'মোবাইল নম্বর দিয়ে বিনামূল্যে যোগ দিন', chat_free_d: 'পেমেন্ট লাগবে না। ডাকনাম, মোবাইল নম্বর ও পিন দিয়ে অ্যাকাউন্ট খুলুন।',
+      chat_free_btn: 'আমার বিনামূল্যের আইডি বানান', chat_free_nick_ph: 'আপনার ডাকনাম', chat_have_id: 'আগেই আইডি আছে?', chat_have_code: 'আইডি কোড আছে (পেইড সদস্য)?', chat_paid_t: '{d} এর পরেও আড্ডা চালাতে চান?',
       chat_free_ended: 'বিনামূল্যের চ্যাটের সময় শেষ। চ্যাট করতে পেইড আইডি লাগবে।', chat_newid_t: 'আপনার আইডি তৈরি',
       chat_newid_d: 'এই আইডি সংরক্ষণ করুন। আবার সাইন ইন করতে বা অন্য ফোনে (সর্বোচ্চ ২টি ডিভাইস) এটি লাগবে।', chat_newid_exist: 'এই ফোনে আপনি আগেই একটি বিনামূল্যের আইডি বানিয়েছেন। এই যে সেটি।',
       chat_copy: 'আইডি কপি করুন', chat_copied: 'কপি হয়েছে', chat_enter: 'আড্ডা শুরু করুন', chat_free_room: 'বিনামূল্যের চ্যাট শেষ হবে {d}',
@@ -264,7 +268,11 @@ window.PUJA_I18N = {
       cp_e_name: 'পুজোর নাম লিখুন (৩ থেকে ৮০ অক্ষর, লিংক বা ফোন নম্বর ছাড়া)।', cp_e_text: 'বিবরণ ও ঠিকানা ছোট হতে হবে, লিংক বা ফোন নম্বর ছাড়া।',
       cp_e_loc: 'অনুগ্রহ করে লোকেশন দিন।', cp_e_far: 'লোকেশনটি কলকাতা অঞ্চলের বাইরে।', cp_e_photo: 'অনুগ্রহ করে একটি ছবি দিন।',
       cp_e_many: 'আজ অনেকগুলো পুজো যোগ করেছেন। কাল আবার চেষ্টা করুন।', cp_e_generic: 'পাঠানো গেল না। ইন্টারনেট দেখে আবার চেষ্টা করুন।',
-      cp_by: '{n}-এর যোগ করা', cp_open_maps: 'গুগল ম্যাপে খুলুন'
+      cp_by: '{n}-এর যোগ করা', cp_open_maps: 'গুগল ম্যাপে খুলুন', chat_tab_create: 'অ্যাকাউন্ট খুলুন', chat_tab_signin: 'সাইন ইন', chat_mobile_ph: '১০ সংখ্যার মোবাইল নম্বর', chat_pin_ph: 'পিন (৪ থেকে ৬ সংখ্যা)',
+      chat_pin_note: 'মনে রাখার মতো একটি পিন দিন। যেকোনো ফোনে মোবাইল নম্বর ও এই পিন দিয়ে সাইন ইন করবেন।', chat_signup_btn: 'বিনামূল্যের অ্যাকাউন্ট খুলুন', chat_signin_btn: 'সাইন ইন',
+      chat_phone_privacy: 'আপনার নম্বর শুধু সাইন ইনের জন্য ব্যবহার হয়। অন্য সদস্যরা কখনও দেখতে পান না।',
+      chat_e_phone: 'সঠিক ১০ সংখ্যার মোবাইল নম্বর দিন।', chat_e_pin: '৪ থেকে ৬ সংখ্যার পিন দিন।', chat_e_taken: 'এই নম্বর আগেই নথিভুক্ত। ‘সাইন ইন’ চাপুন।',
+      chat_e_creds: 'মোবাইল নম্বর বা পিন ঠিক নেই।', chat_e_locked: 'অনেকবার ভুল পিন। ১৫ মিনিট পরে চেষ্টা করুন।', chat_e_setup: 'চ্যাট চালু করার কাজ চলছে। কয়েক মিনিট পরে আবার চেষ্টা করুন।'
     }
   },
   data: {

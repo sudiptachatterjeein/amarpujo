@@ -41,12 +41,13 @@ code{color:var(--zari)}.pc{display:grid;grid-template-columns:96px 1fr;gap:12px;
 <div class="row"><input id="cNick" placeholder="Nickname (optional: member can choose)" maxlength="24"><input id="cNote" placeholder="Note: payment ref / phone (only you see this)" maxlength="300"></div>
 <div class="row"><label for="cUntil"><small>Valid until</small></label><input id="cUntil" type="date" value="2026-11-05" style="flex:none;min-width:0"><button id="cCreate">Create &amp; activate</button></div><p id="cMsg" class="danger"></p>
 <div class="idbox" id="cBox"><small>New ID</small><div class="code" id="cCode"></div><div class="row"><button class="btn2" id="cCopy">Copy</button><a class="btn2" id="cWa" target="_blank" rel="noopener">Send on WhatsApp</a></div></div></div>
+<div class="card"><h2>Setup check</h2><p><small>If something does not show in the app, run this. It lists which SQL files are missing in Supabase.</small></p><div class="row"><button class="btn2" id="scRun">Run check</button></div><div id="scOut"></div></div>
 <div class="card"><h2>Free chat window</h2><p><small>Anyone can create their own free ID until this date and time (IST). After that only paid IDs you create work. Changing it also moves every free ID's expiry.</small></p>
 <div class="row"><small id="fuNow">…</small><input id="fuInput" type="datetime-local" style="flex:none;min-width:0"><button class="btn2" id="fuSave">Save</button></div><p id="fuMsg" class="danger"></p></div>
 <div class="card"><h2>Community pujas</h2><p><small>Visitors add pujas with a photo and location. They appear in the app only after you approve them.</small></p>
 <div class="row"><select id="pStatus" style="padding:10px;border-radius:999px;background:var(--raise);color:var(--ink);border:1px solid var(--line)"><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="">All</option></select><small id="pCounts"></small></div><p id="pMsg" class="danger"></p><div id="pList"><small>Nothing here.</small></div></div>
 <div class="card"><h2>Reports</h2><div id="cReps"><small>No reports.</small></div></div>
-<div class="card"><h2>Members</h2><div class="row"><input id="cQ" placeholder="Search ID, name or note"><button class="btn2" id="cSearch">Search</button></div><div class="table"><table><thead><tr><th>ID</th><th>Name</th><th>Tier</th><th>Note</th><th>Status</th><th>Valid until</th><th>Devices</th><th>Posts</th><th>Last seen</th><th>Actions</th></tr></thead><tbody id="cRows"></tbody></table></div></div>
+<div class="card"><h2>Members</h2><div class="row"><input id="cQ" placeholder="Search ID, name or note"><button class="btn2" id="cSearch">Search</button></div><div class="table"><table><thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>Tier</th><th>Note</th><th>Status</th><th>Valid until</th><th>Devices</th><th>Posts</th><th>Last seen</th><th>Actions</th></tr></thead><tbody id="cRows"></tbody></table></div></div>
 </div>
 <div class="card"><h2>Live visitors</h2><p><small>IP address is server-observed. Location below is only shown if the visitor explicitly grants browser location permission. MAC address is not available to normal websites.</small></p><div class="table"><table><thead><tr><th>Visitor code</th><th>Device</th><th>IP</th><th>Page</th><th>Audio</th><th>Location</th><th>Last seen</th></tr></thead><tbody id="rows"></tbody></table></div></div></div></div>
 <script>
@@ -75,11 +76,11 @@ $('loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({
     const t=l.data.totals||{};$('cAll').textContent=t.all||0;$('cTiers').textContent=(t.free||0)+' free · '+(t.paid||0)+' paid';$('cActive').textContent=t.active||0;$('cOnline').textContent=t.online||0;$('cPosts').textContent=t.posts||0;$('cReports').textContent=t.reports||0;
     $('cRows').innerHTML=(l.data.members||[]).map(m=>{
       const st=m.expired?'expired':m.status;
-      return '<tr><td><b>'+esc(m.code)+'</b></td><td>'+esc(m.nickname||'—')+'</td><td><span class="pill '+(m.tier==='free'?'muted':'active')+'">'+esc(m.tier||'paid')+'</span></td><td>'+esc(m.note||'')+'</td><td><span class="pill '+esc(st)+'">'+esc(st)+'</span></td><td>'+fmtD(m.expires_at)+'</td><td>'+m.devices+'/2</td><td>'+m.posts+'</td><td>'+fmt(m.last_seen)+'</td><td>'+
+      return '<tr><td><b>'+esc(m.code)+'</b></td><td>'+esc(m.nickname||'—')+'</td><td>'+esc(m.phone||'—')+'</td><td><span class="pill '+(m.tier==='free'?'muted':'active')+'">'+esc(m.tier||'paid')+'</span></td><td>'+esc(m.note||'')+'</td><td><span class="pill '+esc(st)+'">'+esc(st)+'</span></td><td>'+fmtD(m.expires_at)+'</td><td>'+m.devices+'/2</td><td>'+m.posts+'</td><td>'+fmt(m.last_seen)+'</td><td>'+
         (m.status==='muted'?'<button class="btn2 ok" data-a="active" data-id="'+m.id+'">Unmute</button> ':'<button class="btn2" data-a="muted" data-id="'+m.id+'">Mute</button> ')+
         (m.status==='blocked'?'<button class="btn2 ok" data-a="active" data-id="'+m.id+'">Unblock</button> ':'<button class="btn2 warn" data-a="blocked" data-id="'+m.id+'">Block</button> ')+
-        '<button class="btn2" data-a="extend" data-id="'+m.id+'" data-exp="'+esc(m.expires_at)+'">+7 days</button> <button class="btn2" data-a="reset" data-id="'+m.id+'">Reset devices</button></td></tr>';
-    }).join('')||'<tr><td colspan="10">No members yet.</td></tr>';
+        '<button class="btn2" data-a="extend" data-id="'+m.id+'" data-exp="'+esc(m.expires_at)+'">+7 days</button> '+(m.phone?'<button class="btn2" data-a="pin" data-id="'+m.id+'">Reset PIN</button> ':'')+'<button class="btn2" data-a="reset" data-id="'+m.id+'">Reset devices</button></td></tr>';
+    }).join('')||'<tr><td colspan="11">No members yet.</td></tr>';
     const reps=r.data||[];
     $('cReps').innerHTML=reps.length?reps.map(x=>'<div class="rep"><small>'+esc(x.nickname)+' · '+esc(x.code)+' · room '+esc(x.room)+' · '+fmt(x.created_at)+(x.reason?' · reason: '+esc(x.reason):'')+'</small><p>'+esc(x.body)+'</p>'+
       '<button class="btn2 warn" data-r="del" data-post="'+x.post_id+'">Delete message</button> <button class="btn2" data-r="ok" data-post="'+x.post_id+'">Dismiss</button> <button class="btn2 warn" data-r="block" data-post="'+x.post_id+'" data-member="'+x.member_id+'">Delete &amp; block member</button></div>').join(''):'<small>No reports.</small>';
@@ -96,6 +97,7 @@ $('loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({
   $('cSearch').onclick=chatLoad;$('cQ').addEventListener('keydown',e=>{if(e.key==='Enter')chatLoad()});
   $('cRows').addEventListener('click',async e=>{
     const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=b.dataset.id;let args={p_id:id};
+    if(a==='pin'){const pin=prompt('New PIN for this member (4 to 6 digits). Tell them the new PIN.');if(!pin)return;const r=await sb.rpc('admin_chat_reset_pin',{p_id:id,p_pin:pin.trim()});alert(r.error?r.error.message:'PIN changed.');return}
     if(a==='extend'){const base=Math.max(Date.now(),new Date(b.dataset.exp).getTime());args.p_expires=new Date(base+7*864e5).toISOString()}
     else if(a==='reset')args.p_reset_devices=true;else args.p_status=a;
     const {error}=await sb.rpc('admin_chat_update',args);if(error)alert(error.message);chatLoad();
@@ -133,6 +135,17 @@ $('loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({
       (x.status!=='approved'?'<button class="btn2 ok" data-p="approved" data-id="'+x.id+'">Approve</button> ':'')+(x.status!=='rejected'?'<button class="btn2 warn" data-p="rejected" data-id="'+x.id+'">Reject</button> ':'')+'<button class="btn2 warn" data-p="delete" data-id="'+x.id+'">Delete</button></div></div>').join('')||'<small>Nothing here.</small>';
   }
   $('pStatus').onchange=pujaLoad;
+  const TESTS=[['chat_info',{},'supabase-chat.sql'],['chat_signup',{p_device:'x',p_nick:'x',p_phone:'x',p_pin:'x'},'supabase-chat.sql'],['chat_signin',{p_device:'x',p_phone:'x',p_pin:'x'},'supabase-chat.sql'],
+    ['chat_login',{p_code:'x',p_device:'x'},'supabase-chat.sql'],['admin_chat_list',{},'supabase-chat.sql'],['admin_chat_reset_pin',{p_id:'00000000-0000-0000-0000-000000000000',p_pin:'x'},'supabase-chat.sql'],
+    ['puja_community_list',{},'supabase-pujas.sql'],['puja_submit',{p_name:'x',p_note:null,p_address:null,p_lat:0,p_lon:0,p_photo:'x',p_nick:null,p_client:'x'},'supabase-pujas.sql'],['admin_puja_list',{},'supabase-pujas.sql']];
+  $('scRun').onclick=async()=>{
+    $('scOut').innerHTML='<small>Checking…</small>';let html='',missing=new Set();
+    for(const [fn,args,file] of TESTS){const {error}=await sb.rpc(fn,args);const gone=error&&(error.code==='PGRST202'||/Could not find the function/i.test(error.message||''));
+      html+='<p>'+(gone?'❌':'✅')+' <code>'+fn+'</code>'+(gone?' <small class="danger">missing: run '+file+'</small>':'')+'</p>';if(gone)missing.add(file)}
+    html+=missing.size?'<p class="danger"><b>Run these in Supabase SQL Editor: '+[...missing].map(esc).join(', ')+'</b></p>':'<p><b>All set. The sign-up form and puja submissions have everything they need.</b></p>';
+    $('scOut').innerHTML=html;
+  };
+
   $('pList').addEventListener('click',async e=>{
     const b=e.target.closest('[data-p]');if(!b)return;const id=b.dataset.id,a=b.dataset.p;
     if(a==='delete'&&!confirm('Delete this puja permanently?'))return;

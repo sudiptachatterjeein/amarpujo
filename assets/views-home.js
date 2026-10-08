@@ -149,7 +149,7 @@
     return '<section class="block"><div class="block-h"><h2>' + T('quick_plans') + '</h2></div><div class="hscroll">' + cards + '</div></section>';
   }
   PM.chatCard = function () {
-    var info = PM.chat && PM.chat.info, free = info && info.free_open && info.free_until ? T('chat_card_free', { d: PM.fmtDay(Date.parse(info.free_until)) }) : '';
+    var f = PM.chatFree ? PM.chatFree() : { open: false }, free = f.open && f.until ? T('chat_card_free', { d: PM.fmtDay(Date.parse(f.until)) }) : '';
     return '<section class="chatcard" data-act="chat-open" role="button" tabindex="0"><span class="cc-ic">' + PM.ic('chat') + '</span><span class="cc-t"><b>' + T('chat_card_t') + '</b><span>' + T('chat_card_d') + '</span>' +
       (free ? '<span class="badge gold">' + PM.esc(free) + '</span>' : '') + '</span><span class="btn primary sm">' + T('chat_open') + '</span></section>';
   };

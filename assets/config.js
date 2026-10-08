@@ -18,6 +18,8 @@ window.PUJA_CONFIG = {
   // Paid community chat ("Puja Adda").
   // CHAT_PAY_URL: the page where people pay. CHAT_PRICE_LABEL: shown in the steps, e.g. "Rs 99" (leave "" to hide).
   // CHAT_CONTACT_URL: where people send the payment screenshot, e.g. "https://wa.me/91XXXXXXXXXX" or "mailto:you@example.com" or "https://t.me/yourname" ("" hides the button).
+  // Used only to decide whether to show the free sign-up if the server cannot be reached. The server date (admin page) is the real one.
+  CHAT_FREE_UNTIL: "2026-10-09T23:59:59+05:30",
   CHAT_PAY_URL: "https://www.buymeachai.in/sudiptachatterjee.work",
   CHAT_PRICE_LABEL: "",
   CHAT_CONTACT_URL: "",
