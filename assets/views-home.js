@@ -170,7 +170,7 @@
     var scroll = el.scrollTop;
     el.innerHTML = '<header class="vhead home-head"><div class="hh-l"><span class="logo">' + PM.ic('diya') + '</span><div><div class="hh-hi">' + greeting() + '</div>' +
       '<div class="hh-sub">' + PM.fmtDay(Date.now()) + '</div></div></div><div class="hh-r">' + PM.themeBtn() + PM.langSwitch() + '</div></header>' +
-      '<div class="pad">' + wxHero() + rail() + mahalaya() + PM.chatCard() + PM.pujaCard() + mustSee() + plansBlock() + quickActions() +
+      '<div class="pad">' + (PM.metroCard ? PM.metroCard() : '') + wxHero() + rail() + mahalaya() + PM.chatCard() + PM.pujaCard() + mustSee() + plansBlock() + quickActions() +
       '<p class="fine foot">' + T('crafted') + ' <b>Sudipta Chatterjee</b></p></div>';
     el.scrollTop = scroll;
   };

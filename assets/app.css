@@ -362,3 +362,27 @@ html[data-theme="laal"] .fab .ic { fill: #fff; stroke: #fff; }
 #chatPhone.cg-input, #chatPin.cg-input { text-transform: none; font-size: 18px; font-weight: 600; letter-spacing: .06em; }
 #chatPin.cg-input::placeholder, #chatPhone.cg-input::placeholder { letter-spacing: 0; font-weight: 500; font-size: 16px; }
 .cg-free { gap: 8px; }
+
+/* ---------- Puja special metro (Home top card + sheet) ---------- */
+.mtc { margin: 8px 0 16px; padding: 16px; border-radius: var(--rl); background: linear-gradient(150deg, rgba(59,130,246,.2), rgb(var(--zr) / .1) 70%, var(--surface)); border: 1px solid rgba(59,130,246,.38); display: grid; gap: 12px; }
+.mtc-h { display: flex; align-items: center; gap: 12px; } .mtc-ic { width: 46px; height: 46px; border-radius: 16px; display: grid; place-items: center; background: #3B82F6; color: #fff; flex: none; } .mtc-ic .ic { width: 25px; height: 25px; }
+.mtc-t h2 { font-size: 19px; font-weight: 800; line-height: 1.2; } .mtc-b { display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--zari-ink); background: var(--zari); border-radius: 999px; padding: 1px 9px; margin-bottom: 3px; }
+.mtc-hl { display: grid; gap: 2px; } .mtc-hl b { display: flex; align-items: center; gap: 7px; font-size: 16px; } .mtc-hl b .ic { width: 18px; height: 18px; color: var(--zari); } .mtc-hl span { font-size: 13.5px; color: var(--mut); line-height: 1.45; }
+.mt-tiles { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; }
+.mt-tile { position: relative; display: grid; align-content: start; gap: 2px; padding: 10px 8px; border-radius: var(--rm); background: var(--surface); border: 1px solid var(--line); text-align: center; min-width: 0; }
+.mt-tile.night { border-color: rgb(var(--zr) / .55); } .mt-tile.now { background: var(--raise); border-color: var(--zari); }
+.mt-tile .mt-pn { font-size: 11.5px; color: var(--mut); line-height: 1.25; } .mt-tile b { font-size: 14.5px; } .mt-tile .mt-ph { font-size: 11.5px; font-weight: 700; color: var(--zari); line-height: 1.25; }
+.mt-flag { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-style: normal; font-size: 10.5px; font-weight: 800; padding: 1px 8px; border-radius: 999px; background: var(--sindoor); color: #fff; white-space: nowrap; } .mt-flag.soft { background: var(--raise2); color: var(--ink); }
+.mtc-cap { margin: -4px 0 0; } .mtc .btn { width: 100%; }
+.mts h2 { display: flex; align-items: center; gap: 8px; } .mts h2 .ic { color: #3B82F6; }
+.mt-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 12px 0 10px; }
+.mt-tabs button { display: grid; gap: 1px; padding: 8px 4px; border-radius: var(--rm); background: var(--surface); border: 1px solid var(--line); color: var(--ink); text-align: center; min-width: 0; }
+.mt-tabs button b { font-size: 12.5px; line-height: 1.2; } .mt-tabs button span { font-size: 11.5px; color: var(--mut); } .mt-tabs button.on { background: var(--raise); border-color: var(--zari); } .mt-tabs button.on span { color: var(--zari); }
+.mt-sap { margin: 0 0 10px; } .mt-body { display: grid; gap: 10px; }
+.mt-line { border-radius: var(--rm); background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--lc); padding: 12px; }
+.mt-line header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; } .mt-line header i { width: 12px; height: 12px; border-radius: 50%; background: var(--lc); flex: none; }
+.mt-line header > div { flex: 1; min-width: 0; } .mt-line h3 { font-size: 16px; font-weight: 800; } .mt-line header span { font-size: 12.5px; color: var(--mut); }
+.mt-tag { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: var(--raise); color: var(--mut); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; } .mt-tag.on { background: rgb(var(--zr) / .2); color: var(--zari); } .mt-tag .ic { width: 12px; height: 12px; }
+.mt-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; } .mt-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.mt-rows li span { color: var(--mut); min-width: 0; } .mt-rows li b { text-align: right; font-size: 13.5px; flex: none; max-width: 58%; } .mt-rows li.mt-n { display: block; color: var(--mut); font-size: 12.5px; line-height: 1.45; }
+.mt-none { font-size: 13.5px; color: var(--mut); margin: 0; }
