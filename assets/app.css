@@ -406,3 +406,25 @@ html[data-theme="laal"] .fab .ic { fill: #fff; stroke: #fff; }
 .cel-en { font-size: 20px; font-weight: 700; letter-spacing: .5px; margin-top: 4px; } .cel-box p { margin: 14px 0 0; font-size: 16px; color: #F7F0E1; } .cel-box small { display: block; margin-top: 18px; opacity: .7; }
 @keyframes celFall { to { transform: translateY(115vh) rotate(360deg); } } @keyframes celIn { from { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { #mhCel i { animation: none; display: none; } }
+
+/* ---- v12: immersive Mahalaya + Dhaak Jam ---- */
+#imm { position: fixed; inset: 0; z-index: 9000; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: calc(var(--st) + 14px) 18px calc(var(--sb) + 18px); color: #F7F0E1; overflow: hidden; touch-action: manipulation; background: radial-gradient(circle at 50% 38%, #4a2a6e 0%, #1c1240 45%, #0a0720 100%); }
+.imm-top { width: 100%; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 18px; color: #FFD36B; } .imm-x { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font-size: 16px; }
+.imm-mid { position: relative; width: min(82vw, 52vh, 380px); aspect-ratio: 1; display: grid; place-items: center; margin: auto 0; }
+.mdl { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 0 18px rgba(246,185,59,.35)); }
+.mdl ellipse { fill: rgba(246,185,59,.10); stroke: #F6B93B; stroke-width: 1.6; } .mdl .spin2 ellipse { fill: rgba(240,90,71,.14); stroke: #FF9F7A; }
+.mdl .core { fill: #FFD36B; } .mdl .r1 { fill: none; stroke: rgba(255,255,255,.18); stroke-width: 1; stroke-dasharray: 3 6; }
+.mdl .ring { fill: none; stroke: #F05A47; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset .4s linear; } .mdl circle[r="140"]:not(.ring) { display: none; }
+.mdl .spin, .mdl .spin2 { transform-origin: 0 0; animation: immSpin 60s linear infinite; animation-play-state: paused; } .mdl .spin2 { animation-direction: reverse; animation-duration: 40s; }
+#imm.playing .spin, #imm.playing .spin2 { animation-play-state: running; } #imm.playing .core { animation: immPulse 1.6s ease-in-out infinite; transform-origin: 0 0; }
+.imm-t { position: relative; text-align: center; } .imm-t b { font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums; text-shadow: 0 2px 14px rgba(0,0,0,.6); } .imm-t small { display: block; font-size: 14px; opacity: .8; }
+.imm-seek { width: 100%; max-width: 420px; } .imm-seek input { width: 100%; accent-color: #F6B93B; }
+.imm-ctl { display: flex; align-items: center; gap: 22px; margin: 10px 0; } .imm-ctl button { color: #fff; font-weight: 700; font-size: 15px; padding: 10px 14px; border-radius: 99px; background: rgba(255,255,255,.12); }
+.imm-ctl .big { width: 72px; height: 72px; padding: 0; font-size: 26px; border-radius: 50%; background: var(--fab); color: #2A1B00; box-shadow: 0 0 30px rgba(246,185,59,.5); }
+.imm-foot { font-size: 13px; opacity: .8; min-height: 20px; text-align: center; }
+.dy { position: absolute; width: 0; height: 0; pointer-events: none; } .dy b { position: absolute; left: -16px; top: -16px; font-size: 32px; line-height: 1; font-weight: 400; } .dy i { position: absolute; left: -34px; top: -40px; width: 68px; height: 68px; border-radius: 50%; background: radial-gradient(circle, rgba(255,190,70,.75), rgba(255,140,40,0) 70%); animation: immFlick 1.3s ease-in-out infinite alternate; }
+@keyframes immSpin { to { transform: rotate(360deg); } } @keyframes immPulse { 50% { transform: scale(1.35); } } @keyframes immFlick { from { opacity: .55; transform: scale(.9); } to { opacity: 1; transform: scale(1.12); } }
+.dj-g { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+.dj-p { height: 110px; border-radius: 22px; background: var(--raise); border: 1px solid var(--line2); display: grid; place-items: center; align-content: center; gap: 2px; transition: transform .08s; } .dj-p span { font-size: 40px; line-height: 1; } .dj-p b { font-size: 15px; font-weight: 800; }
+.dj-p:active, .dj-p.pop, .dj-p.beat { transform: scale(.94); background: var(--raise2); box-shadow: 0 0 0 2px var(--zari) inset; }
+@media (prefers-reduced-motion: reduce) { .mdl .spin, .mdl .spin2, .dy i { animation: none; } }

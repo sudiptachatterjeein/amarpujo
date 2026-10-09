@@ -65,7 +65,7 @@
       if (n > 22) { clearInterval(t); el.textContent = '🎉 ' + PM.pn(last); setTimeout(function () { spinning = false; el.textContent = X('Spin again', 'আবার ঘোরান'); PM.openPandal(last); }, 650); }
     }, 75);
   };
-  PM.extrasCards = function () { return passportCard() + rouletteCard(); };
+  PM.extrasCards = function () { return passportCard() + rouletteCard() + (PM.jamCard ? PM.jamCard() : ''); };
 
   /* ---------- Shubho Mahalaya celebration ---------- */
   PM.celebrate = function () {

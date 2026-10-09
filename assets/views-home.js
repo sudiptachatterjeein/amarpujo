@@ -121,7 +121,7 @@
       '<div class="mh-ic">' + PM.ic('radio') + '</div>' +
       '<div class="mh-txt"><div class="mh-st"><i class="live-dot"></i><span>' + label + '</span></div><h3>' + T('mh_title') + '</h3>' +
       '<p>' + T('mh_when') + '</p><p class="mh-line" id="mhLine">' + line + '</p></div>' +
-      seek + '<div class="mh-act">' + listen + arm + '<button class="btn ghost" data-act="mh-cal">' + PM.ic('calendar') + T('add_cal') + '</button></div>' +
+      seek + '<div class="mh-act">' + listen + arm + (stream ? '<button class="btn ghost" data-act="imm-open">' + PM.ic('radio') + (PM.X ? PM.X('Immersive', 'ইমার্সিভ') : 'Immersive') + '</button>' : '') + '<button class="btn ghost" data-act="mh-cal">' + PM.ic('calendar') + T('add_cal') + '</button></div>' +
       (s === 'soon' && armed ? '<p class="fine mh-fine">' + T(stream ? 'mh_armed_stream' : 'mh_armed_page') + '</p>' : '') + '</section>';
   }
   PM.mahalayaCountdown = function () {

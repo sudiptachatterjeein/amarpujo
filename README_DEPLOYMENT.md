@@ -56,3 +56,8 @@ Upload the CONTENTS of this folder (not an extra outer folder) and commit. Verce
 - **Mahalaya player**: seek bar, -15s / +15s, and a "Live" button to jump to the live position.
 - **Shubho Mahalaya celebration**: a full-screen petal and diya animation the first time the audio starts.
 - Files changed: `assets/extras.js` (new), `assets/mahalaya.js`, `assets/views-home.js`, `assets/app.css`, `index.html`, `sw.js` (now `puja26-v11`).
+
+## New in v12
+- **Immersive Mahalaya** (button on the Mahalaya card): full-screen rotating mandala with a progress ring, big timer, play/pause, seek and -15s/+15s. Tap anywhere to light a diya. The screen stays awake while it is open.
+- **Dhaak Jam** (Home): four pads (dhaak, kathi, kansor, shankh) and an auto rhythm. All sounds are generated in the phone, so there are no extra audio files.
+- Files changed: `assets/immersive.js` (new), `assets/extras.js`, `assets/views-home.js`, `assets/app.css`, `index.html`, `sw.js` (now `puja26-v12`).
