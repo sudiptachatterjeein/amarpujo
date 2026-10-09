@@ -43,3 +43,9 @@ Upload the CONTENTS of this folder (not an extra outer folder) and commit. Verce
 - Numbers are NOT verified by SMS (that needs a paid SMS service). The PIN protects the account. Numbers are visible only to you in the admin page; keep them private and mention this in your privacy note.
 - Puja submissions: 3 per phone and 10 per connection per day. Photos are shrunk on the phone before upload.
 - To end free chat early or extend it, change the date in the admin page. No code change needed.
+
+## Mahalaya auto-play (v10)
+- `assets/mahalaya.mp3` is the broadcast (compressed to about 22 MB so it uploads to GitHub from the browser). `MAHALAYA_STREAM_URL` in `assets/config.js` points to it.
+- Visitors tap **Alert me at 4 AM** once. That tap unlocks sound; the app then starts the audio by itself at 4:00 AM IST (10 Oct 2026) while the app is open. If the phone blocks it, a "Tap to start" banner appears and the first tap anywhere starts it.
+- **Rehearse before the real day:** open `yoursite.vercel.app/?mhtest=2`, tap *Alert me*, wait 2 minutes. Mahalaya should start by itself. (Rehearsal lasts for that browser session only.)
+- Do not use `?v=` cache numbers older than 10 for the files; `sw.js` is now `puja26-v10`.

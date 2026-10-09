@@ -3,7 +3,16 @@
 (function (PM) {
   'use strict';
   var C = PM.CFG, T = function (k, v) { return PM.t(k, v); };
-  var ARM = 'puja26_mh_armed', DISMISS = 'puja26_mh_banner_x', lastState = null, tapNeeded = false;
+  var ARM = 'puja26_mh_armed', DISMISS = 'puja26_mh_banner_x', FIRED = 'puja26_mh_fired';
+  var lastState = null, tapNeeded = false, started = false, notified = false, wakeLock = null, timer = null;
+
+  /* Rehearsal: open the app with ?mhtest=2 and Mahalaya "starts" 2 minutes from now (kept for this browser session). */
+  try {
+    var q = new URLSearchParams(location.search).get('mhtest');
+    if (q !== null) sessionStorage.setItem('puja26_mh_test', String(Date.now() + Math.max(0.2, parseFloat(q) || 2) * 6e4));
+    var tt = +sessionStorage.getItem('puja26_mh_test');
+    if (tt && tt > Date.now() - 4 * 36e5) C.MAHALAYA_START = new Date(tt).toISOString();
+  } catch (e) {}
 
   PM.audio = new Audio(); PM.audio.preload = 'none';
   if (C.MAHALAYA_STREAM_URL) PM.audio.src = C.MAHALAYA_STREAM_URL;
@@ -36,22 +45,61 @@
       else new Notification(T('mh_started'), opts);
     } catch (e) {}
   }
-  function autoplay() {
-    if (!PM.mhHasStream() || !PM.mhArmed()) return;
+  /* ---------- scheduled auto-start ---------- */
+  function wantAuto() {
+    return PM.mhHasStream() && PM.mhArmed() && PM.store.get(FIRED, '') !== C.MAHALAYA_START && Date.now() < PM.mhStart() + 3 * 36e5;
+  }
+  function lock() {                               // keep the screen awake while waiting
+    try {
+      if (!wakeLock && 'wakeLock' in navigator && PM.mhArmed() && PM.mahalayaState() === 'soon' && document.visibilityState === 'visible') {
+        navigator.wakeLock.request('screen').then(function (w) { wakeLock = w; w.addEventListener('release', function () { wakeLock = null; }); }).catch(function () {});
+      }
+    } catch (e) {}
+  }
+  function unlock_wake() { if (wakeLock) { wakeLock.release().catch(function () {}); wakeLock = null; } }
+  function unlockAudio() {                        // silent play/pause while we have a user tap, so the browser allows playback later
+    if (!PM.mhHasStream() || !PM.audio.paused || started) return;
+    try {
+      PM.audio.preload = 'auto'; PM.audio.muted = true;
+      var p = PM.audio.play();
+      if (p && p.then) p.then(function () { if (!started) { PM.audio.pause(); try { PM.audio.currentTime = 0; } catch (e) {} } PM.audio.muted = false; }).catch(function () { PM.audio.muted = false; });
+    } catch (e) { PM.audio.muted = false; }
+  }
+  function fire() {
+    if (started || !wantAuto()) return;
+    started = true; PM.audio.muted = false;
+    try { PM.audio.currentTime = 0; } catch (e) {}
+    var ok = function () { PM.store.set(FIRED, C.MAHALAYA_START); tapNeeded = false; unlock_wake(); banner(); };
     var p = PM.audio.play();
-    if (p && p.catch) p.catch(function () { tapNeeded = true; banner(); PM.toast(T('mh_tap_again')); });
+    if (p && p.then) p.then(ok).catch(function () { started = false; tapNeeded = true; banner(); PM.toast(T('mh_tap_again')); }); else ok();
+    if (!notified) { notified = true; notify(); }
+  }
+  function schedule() {                           // exact timer for the start moment (the 1 s tick is a backup)
+    clearTimeout(timer);
+    var d = PM.mhStart() - Date.now();
+    if (PM.mhArmed() && d > 0) timer = setTimeout(function () { PM.mahalayaTick(); }, d + 30);
   }
 
   /* called every second from main.js */
   PM.mahalayaTick = function () {
     var st = PM.mahalayaState();
-    if (lastState === null) { lastState = st; banner(); return; }          // first run: just show the banner if we are inside the live window
     if (st !== lastState) {
-      var was = lastState; lastState = st;
-      if (was === 'soon' && st === 'live') { banner(); autoplay(); notify(); }
-      if (PM.st.tab === 'home') PM.renderHome();
+      var first = lastState === null; lastState = st; banner();
+      if (!first && PM.st.tab === 'home') PM.renderHome();
     }
+    if (st === 'live' && !tapNeeded) fire();      // also catches "app opened after 4 AM" and a sleeping/throttled phone
   };
+
+  /* the first tap anywhere: start blocked auto-play, or silently re-unlock audio after a page reload */
+  document.addEventListener('pointerdown', function (e) {
+    if (e.target && e.target.closest && e.target.closest('[data-act="mh-play"]')) return;
+    if (!wantAuto()) return;
+    if (PM.mahalayaState() === 'live') { started = false; tapNeeded = false; fire(); } else unlockAudio();
+  }, true);
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { lock(); PM.mahalayaTick(); } });
+  window.addEventListener('pageshow', function () { lock(); PM.mahalayaTick(); });
+  window.addEventListener('focus', function () { PM.mahalayaTick(); });
+  if (PM.mhArmed() && PM.mahalayaState() === 'soon') { if (PM.mhHasStream()) PM.audio.preload = 'auto'; lock(); schedule(); }
 
   /* ---------- actions ---------- */
   PM.acts['mh-play'] = function () {
@@ -64,11 +112,10 @@
     PM.store.set(DISMISS, C.MAHALAYA_START); banner();
   };
   PM.acts['mh-arm'] = function () {
-    if (PM.mhArmed()) { PM.store.set(ARM, '0'); PM.toast(T('mh_alert_off')); PM.renderHome(); return; }
+    if (PM.mhArmed()) { PM.store.set(ARM, '0'); unlock_wake(); clearTimeout(timer); PM.toast(T('mh_alert_off')); PM.renderHome(); return; }
     PM.store.set(ARM, '1');
-    if (PM.mhHasStream()) {                       // unlock audio playback while we have a tap
-      try { PM.audio.muted = true; var p = PM.audio.play(); if (p && p.then) p.then(function () { PM.audio.pause(); PM.audio.currentTime = 0; PM.audio.muted = false; }).catch(function () { PM.audio.muted = false; }); } catch (e) { PM.audio.muted = false; }
-    }
+    unlockAudio();                                // this tap is what lets the browser start sound by itself later
+    lock(); schedule();
     if ('Notification' in window && Notification.permission === 'default') { try { Notification.requestPermission(); } catch (e) {} }
     PM.toast(T('mh_alert_on_toast')); PM.renderHome();
   };
@@ -86,7 +133,7 @@
         if (ev === 'play') { try { navigator.mediaSession.metadata = new MediaMetadata({ title: T('mh_title'), artist: T('app_title'), album: T('app_name') }); } catch (e) {} navigator.mediaSession.playbackState = 'playing'; }
         else navigator.mediaSession.playbackState = 'paused';
       }
-      if (ev === 'play') { tapNeeded = false; banner(); }
+      if (ev === 'play' && !PM.audio.muted) { tapNeeded = false; if (PM.mahalayaState() !== 'soon') PM.store.set(FIRED, C.MAHALAYA_START); banner(); }
       if (PM.st.tab === 'home') PM.renderHome();
     });
   });

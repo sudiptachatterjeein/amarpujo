@@ -8,7 +8,7 @@ window.PUJA_CONFIG = {
   // MAHALAYA_PAGE_URL: opens in a new tab (works for everyone).
   // MAHALAYA_STREAM_URL: OPTIONAL direct audio file/stream (mp3/aac/m3u8) you have the right to play. If set, the app plays it in-app and can auto-start it at 4:00 AM.
   MAHALAYA_PAGE_URL: "https://audio.com/chandan-roy-1/audio/mahalaya-original-chandi-path-birendra-krishna-bhadra-full-chandipath-yqfn",
-  MAHALAYA_STREAM_URL: "",
+  MAHALAYA_STREAM_URL: "/assets/mahalaya.mp3",
   MAHALAYA_START: "2026-10-10T04:00:00+05:30",
 
   // Support button / QR sheet

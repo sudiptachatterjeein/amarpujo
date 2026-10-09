@@ -1,7 +1,7 @@
 /* Puja Map 2026 service worker: app shell works offline; live APIs are never cached. Bump VERSION on each release. */
-const VERSION = 'puja26-v9';
-const SHELL = ['/', '/index.html', '/assets/app.css?v=9', '/assets/data.js?v=9', '/assets/config.js?v=9', '/assets/i18n.js?v=9', '/assets/core.js?v=9', '/assets/weather.js?v=9',
-  '/assets/community.js?v=9', '/assets/mahalaya.js?v=9', '/assets/metro.js?v=9', '/assets/chat.js?v=9', '/assets/pujas.js?v=9', '/assets/support-qr.png', '/assets/map.js?v=9', '/assets/views-home.js?v=9', '/assets/views-explore.js?v=9', '/assets/views-route.js?v=9', '/assets/views-more.js?v=9', '/assets/main.js?v=9',
+const VERSION = 'puja26-v10';
+const SHELL = ['/', '/index.html', '/assets/app.css?v=10', '/assets/data.js?v=10', '/assets/config.js?v=10', '/assets/i18n.js?v=10', '/assets/core.js?v=10', '/assets/weather.js?v=10',
+  '/assets/community.js?v=10', '/assets/mahalaya.js?v=10', '/assets/metro.js?v=10', '/assets/chat.js?v=10', '/assets/pujas.js?v=10', '/assets/support-qr.png', '/assets/map.js?v=10', '/assets/views-home.js?v=10', '/assets/views-explore.js?v=10', '/assets/views-route.js?v=10', '/assets/views-more.js?v=10', '/assets/main.js?v=10',
   '/assets/favicon.svg', '/manifest.webmanifest'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(VERSION).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));
@@ -20,6 +20,8 @@ self.addEventListener('fetch', (e) => {
     return;
   }
   if (url.origin !== location.origin) return;
+  // Big audio / range requests go straight to the network (never cached, so seeking and streaming work).
+  if (url.pathname.endsWith('.mp3') || req.headers.has('range')) return;
   // Same-origin: network first (so a new deploy shows up immediately), cached copy when offline.
   e.respondWith(fetch(req).then((r) => { if (r.ok) { const copy = r.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); } return r; })
     .catch(() => caches.open(VERSION).then((c) => c.match(req).then((hit) => hit || (req.mode === 'navigate' ? c.match('/index.html') : Response.error())))));
