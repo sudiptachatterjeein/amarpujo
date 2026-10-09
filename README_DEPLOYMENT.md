@@ -61,3 +61,10 @@ Upload the CONTENTS of this folder (not an extra outer folder) and commit. Verce
 - **Immersive Mahalaya** (button on the Mahalaya card): full-screen rotating mandala with a progress ring, big timer, play/pause, seek and -15s/+15s. Tap anywhere to light a diya. The screen stays awake while it is open.
 - **Dhaak Jam** (Home): four pads (dhaak, kathi, kansor, shankh) and an auto rhythm. All sounds are generated in the phone, so there are no extra audio files.
 - Files changed: `assets/immersive.js` (new), `assets/extras.js`, `assets/views-home.js`, `assets/app.css`, `index.html`, `sw.js` (now `puja26-v12`).
+
+## v13: more realistic Dhaak Jam
+- The synth was rebuilt: deep bass boom, fast stick rolls on the treble head, bright kansor, small ghonta, and a pandal-like reverb. The auto rhythm now schedules on the audio clock, so it stays steady, and uses a 32-step aarti-style groove.
+- **For the real Bengali dhaak sound, add recordings** (any phone recording from a pandal, trimmed and compressed as mp3):
+  - `assets/dhaak.mp3`: one single dhaak boom (about 1 second). The Dhaak pad and the rhythm's boom then use it.
+  - `assets/dhaak-loop.mp3`: a clean 10 to 20 second loop of real dhaak. "Auto rhythm" then plays this loop instead of the synth pattern.
+  If the files are missing, the app quietly uses the synth.
