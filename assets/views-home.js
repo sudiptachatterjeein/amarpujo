@@ -116,11 +116,12 @@
       ? '<button class="btn ' + (s !== 'soon' ? 'primary' : '') + '" data-act="mh-play">' + PM.ic(playing ? 'pause' : 'play') + (playing ? T('pause') : T('listen')) + '</button>'
       : (page ? '<a class="btn ' + (s !== 'soon' ? 'primary' : '') + '" href="' + PM.esc(page) + '" target="_blank" rel="noopener">' + PM.ic('play') + T('mh_listen_page') + '</a>' : '');
     var arm = s === 'soon' ? '<button class="btn ' + (armed ? 'on' : 'ghost') + '" data-act="mh-arm" aria-pressed="' + armed + '">' + PM.ic('bell') + (armed ? T('mh_alert_set') : T('mh_alert_me')) + '</button>' : '';
+    var seek = stream && s !== 'soon' ? '<div class="mh-seek"><button data-act="mh-skip" data-s="-15">-15s</button><input id="mhSeek" type="range" min="0" max="1000" value="0" aria-label="Seek"><button data-act="mh-skip" data-s="15">+15s</button><span id="mhTime">0:00</span>' + (s === 'live' ? '<button data-act="mh-sync">' + (PM.X ? PM.X('Live', 'লাইভ') : 'Live') + '</button>' : '') + '</div>' : '';
     return '<section class="mh ' + (s === 'live' ? 'live' : '') + '" id="mhCard">' +
       '<div class="mh-ic">' + PM.ic('radio') + '</div>' +
       '<div class="mh-txt"><div class="mh-st"><i class="live-dot"></i><span>' + label + '</span></div><h3>' + T('mh_title') + '</h3>' +
       '<p>' + T('mh_when') + '</p><p class="mh-line" id="mhLine">' + line + '</p></div>' +
-      '<div class="mh-act">' + listen + arm + '<button class="btn ghost" data-act="mh-cal">' + PM.ic('calendar') + T('add_cal') + '</button></div>' +
+      seek + '<div class="mh-act">' + listen + arm + '<button class="btn ghost" data-act="mh-cal">' + PM.ic('calendar') + T('add_cal') + '</button></div>' +
       (s === 'soon' && armed ? '<p class="fine mh-fine">' + T(stream ? 'mh_armed_stream' : 'mh_armed_page') + '</p>' : '') + '</section>';
   }
   PM.mahalayaCountdown = function () {
@@ -170,12 +171,13 @@
     var scroll = el.scrollTop;
     el.innerHTML = '<header class="vhead home-head"><div class="hh-l"><span class="logo">' + PM.ic('diya') + '</span><div><div class="hh-hi">' + greeting() + '</div>' +
       '<div class="hh-sub">' + PM.fmtDay(Date.now()) + '</div></div></div><div class="hh-r">' + PM.themeBtn() + PM.langSwitch() + '</div></header>' +
-      '<div class="pad">' + (PM.metroCard ? PM.metroCard() : '') + wxHero() + rail() + mahalaya() + PM.chatCard() + PM.pujaCard() + mustSee() + plansBlock() + quickActions() +
+      '<div class="pad">' + (PM.metroCard ? PM.metroCard() : '') + wxHero() + rail() + mahalaya() + (PM.extrasCards ? PM.extrasCards() : '') + PM.chatCard() + PM.pujaCard() + mustSee() + plansBlock() + quickActions() +
       '<p class="fine foot">' + T('crafted') + ' <b>Sudipta Chatterjee</b></p></div>';
-    el.scrollTop = scroll;
+    el.scrollTop = scroll; if (PM.mhSeekUpdate) PM.mhSeekUpdate();
   };
   PM.refreshHomeLive = function () {      // lightweight per-second / per-minute updates without re-rendering everything
     var cd = document.getElementById('cdText'); if (cd) cd.textContent = PM.countdownText();
+    if (PM.mhSeekUpdate) PM.mhSeekUpdate();
     var ln = document.getElementById('mhLine');
     if (ln && PM.mahalayaState() === 'soon') ln.textContent = T('mh_starts_in', { t: PM.mahalayaCountdown() });
   };

@@ -69,7 +69,7 @@
     if (started || !wantAuto()) return;
     started = true; PM.audio.muted = false;
     try { PM.audio.currentTime = 0; } catch (e) {}
-    var ok = function () { PM.store.set(FIRED, C.MAHALAYA_START); tapNeeded = false; unlock_wake(); banner(); };
+    var ok = function () { PM.store.set(FIRED, C.MAHALAYA_START); tapNeeded = false; unlock_wake(); banner(); if (PM.celebrate) PM.celebrate(); };
     var p = PM.audio.play();
     if (p && p.then) p.then(ok).catch(function () { started = false; tapNeeded = true; banner(); PM.toast(T('mh_tap_again')); }); else ok();
     if (!notified) { notified = true; notify(); }
@@ -119,6 +119,28 @@
     if ('Notification' in window && Notification.permission === 'default') { try { Notification.requestPermission(); } catch (e) {} }
     PM.toast(T('mh_alert_on_toast')); PM.renderHome();
   };
+
+  /* ---------- seek bar, +-15 s, jump to live ---------- */
+  var seeking = false, KNOWN = 5298;
+  function dur() { var d = PM.audio.duration; return isFinite(d) && d > 0 ? d : KNOWN; }
+  function mm(s) { s = Math.max(0, Math.floor(s)); var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (x < 10 ? '0' : '') + x; }
+  PM.mhSeekUpdate = function () {
+    var r = document.getElementById('mhSeek'), t = document.getElementById('mhTime'); if (!r || !t) return;
+    var d = dur(), c = PM.audio.currentTime || 0;
+    if (!seeking) r.value = Math.round(c / d * 1000);
+    t.textContent = mm(seeking ? r.value / 1000 * d : c) + ' / ' + mm(d);
+  };
+  document.addEventListener('input', function (e) { if (e.target && e.target.id === 'mhSeek') { seeking = true; PM.mhSeekUpdate(); } });
+  document.addEventListener('change', function (e) {
+    if (e.target && e.target.id === 'mhSeek') { try { PM.audio.currentTime = e.target.value / 1000 * dur(); } catch (x) {} seeking = false; PM.mhSeekUpdate(); }
+  });
+  PM.acts['mh-skip'] = function (el) { try { PM.audio.currentTime = Math.max(0, Math.min(dur() - 1, (PM.audio.currentTime || 0) + (+el.getAttribute('data-s')))); } catch (e) {} PM.mhSeekUpdate(); };
+  PM.acts['mh-sync'] = function () {
+    var off = (Date.now() - PM.mhStart()) / 1000; if (off < 0) return;
+    try { PM.audio.currentTime = Math.min(dur() - 1, off); } catch (e) {}
+    if (PM.audio.paused) PM.audio.play().catch(function () { PM.toast(T('mh_err')); });
+    PM.mhSeekUpdate();
+  };
   PM.acts['mh-cal'] = function () {
     var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PujaMap26//EN', 'BEGIN:VEVENT', 'UID:mahalaya-2026@pujamap26', 'DTSTAMP:20261001T000000Z',
       'DTSTART:20261009T223000Z', 'DTEND:20261010T003000Z', 'SUMMARY:Mahalaya 2026 (4:00 AM IST)', 'DESCRIPTION:Mahalaya from 4:00 AM IST. ' + (C.MAHALAYA_PAGE_URL || PM.site()),
@@ -133,7 +155,7 @@
         if (ev === 'play') { try { navigator.mediaSession.metadata = new MediaMetadata({ title: T('mh_title'), artist: T('app_title'), album: T('app_name') }); } catch (e) {} navigator.mediaSession.playbackState = 'playing'; }
         else navigator.mediaSession.playbackState = 'paused';
       }
-      if (ev === 'play' && !PM.audio.muted) { tapNeeded = false; if (PM.mahalayaState() !== 'soon') PM.store.set(FIRED, C.MAHALAYA_START); banner(); }
+      if (ev === 'play' && !PM.audio.muted) { tapNeeded = false; if (PM.mahalayaState() !== 'soon') { PM.store.set(FIRED, C.MAHALAYA_START); if (PM.celebrate) PM.celebrate(); } banner(); }
       if (PM.st.tab === 'home') PM.renderHome();
     });
   });

@@ -49,3 +49,10 @@ Upload the CONTENTS of this folder (not an extra outer folder) and commit. Verce
 - Visitors tap **Alert me at 4 AM** once. That tap unlocks sound; the app then starts the audio by itself at 4:00 AM IST (10 Oct 2026) while the app is open. If the phone blocks it, a "Tap to start" banner appears and the first tap anywhere starts it.
 - **Rehearse before the real day:** open `yoursite.vercel.app/?mhtest=2`, tap *Alert me*, wait 2 minutes. Mahalaya should start by itself. (Rehearsal lasts for that browser session only.)
 - Do not use `?v=` cache numbers older than 10 for the files; `sw.js` is now `puja26-v10`.
+
+## New in v11
+- **Pandal Passport** (Home): badge levels from "Pujo Newbie" to "Maha Pandal-Wallah" based on pandals marked visited, plus a button that makes a shareable image card (WhatsApp share, or saved as a PNG).
+- **Pujo Roulette** (Home): spins and picks a random pandal (unvisited ones in the current region first) and opens its details.
+- **Mahalaya player**: seek bar, -15s / +15s, and a "Live" button to jump to the live position.
+- **Shubho Mahalaya celebration**: a full-screen petal and diya animation the first time the audio starts.
+- Files changed: `assets/extras.js` (new), `assets/mahalaya.js`, `assets/views-home.js`, `assets/app.css`, `index.html`, `sw.js` (now `puja26-v11`).

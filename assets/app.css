@@ -386,3 +386,23 @@ html[data-theme="laal"] .fab .ic { fill: #fff; stroke: #fff; }
 .mt-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; } .mt-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
 .mt-rows li span { color: var(--mut); min-width: 0; } .mt-rows li b { text-align: right; font-size: 13.5px; flex: none; max-width: 58%; } .mt-rows li.mt-n { display: block; color: var(--mut); font-size: 12.5px; line-height: 1.45; }
 .mt-none { font-size: 13.5px; color: var(--mut); margin: 0; }
+
+/* ---- v11 extras: passport, roulette, Mahalaya seek + celebration ---- */
+.pp, .rl { margin-top: 18px; padding: 16px; border-radius: var(--rl); background: var(--surface); border: 1px solid var(--line); }
+.pp-h { display: flex; align-items: center; gap: 12px; } .pp-badge { font-size: 34px; line-height: 1; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 16px; background: var(--raise); }
+.pp-t { flex: 1; min-width: 0; } .pp-t b { display: block; font-size: 17px; font-weight: 800; } .pp-t span { font-size: 13px; color: var(--zari); font-weight: 700; }
+.pp-n { font-size: 26px; font-weight: 800; color: var(--zari); } .pp-n small { font-size: 14px; color: var(--mut); font-weight: 600; }
+.pp-bar { height: 10px; border-radius: 99px; background: var(--wash2); margin: 12px 0 6px; overflow: hidden; } .pp-bar i { display: block; height: 100%; border-radius: 99px; background: var(--fab); transition: width .5s; }
+.pp-act { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.rl { display: flex; align-items: center; gap: 12px; justify-content: space-between; } .rl-t { min-width: 0; } .rl-t b { display: block; font-size: 17px; font-weight: 800; } .rl-t span { font-size: 13px; color: var(--mut); }
+.rl .btn { flex: 0 0 auto; max-width: 52%; min-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mh-seek { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; }
+.mh-seek input[type=range] { flex: 1; min-width: 0; accent-color: var(--zari); height: 28px; }
+.mh-seek span { font-size: 12px; color: var(--mut); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mh-seek button { font-size: 12px; font-weight: 700; padding: 6px 9px; border-radius: 99px; background: var(--raise); color: var(--ink); white-space: nowrap; }
+#mhCel { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle at 50% 40%, rgba(246,185,59,.35), rgba(18,14,43,.96) 70%); animation: celIn .5s ease; }
+#mhCel i { position: absolute; top: -40px; font-style: normal; opacity: .9; animation: celFall linear infinite; }
+.cel-box { position: relative; text-align: center; padding: 24px; color: #fff; } .cel-bn { font-size: 54px; font-weight: 800; color: #FFD36B; text-shadow: 0 4px 30px rgba(246,185,59,.6); }
+.cel-en { font-size: 20px; font-weight: 700; letter-spacing: .5px; margin-top: 4px; } .cel-box p { margin: 14px 0 0; font-size: 16px; color: #F7F0E1; } .cel-box small { display: block; margin-top: 18px; opacity: .7; }
+@keyframes celFall { to { transform: translateY(115vh) rotate(360deg); } } @keyframes celIn { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #mhCel i { animation: none; display: none; } }
