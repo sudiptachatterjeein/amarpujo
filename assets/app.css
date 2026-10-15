@@ -428,3 +428,20 @@ html[data-theme="laal"] .fab .ic { fill: #fff; stroke: #fff; }
 .dj-p { height: 96px; border-radius: 22px; background: var(--raise); border: 1px solid var(--line2); display: grid; place-items: center; align-content: center; gap: 2px; transition: transform .08s; } .dj-p span { font-size: 34px; line-height: 1; } .dj-p b { font-size: 15px; font-weight: 800; }
 .dj-p:active, .dj-p.pop, .dj-p.beat { transform: scale(.94); background: var(--raise2); box-shadow: 0 0 0 2px var(--zari) inset; }
 @media (prefers-reduced-motion: reduce) { .mdl .spin, .mdl .spin2, .dy i { animation: none; } }
+
+/* ---- v14: Pujo Club (streak, XP), Puja Day guide, quiz, bingo ---- */
+.cb, .gd { margin-top: 18px; padding: 16px; border-radius: var(--rl); background: var(--surface); border: 1px solid var(--line); }
+.gd { background: linear-gradient(135deg, var(--raise), var(--surface)); }
+.gd-h { display: flex; align-items: center; gap: 12px; } .gd-h b { font-size: 18px; font-weight: 800; color: var(--zari); } .gd-i { font-size: 30px; }
+.gd p { margin: 8px 0 0; font-size: 14px; line-height: 1.5; } .gd-tip { color: var(--mut); }
+.gd-s { display: flex; gap: 8px; margin-top: 12px; } .gd-c { flex: 1; text-align: center; padding: 8px 0; border-radius: 14px; background: var(--wash1); } .gd-c b { display: block; font-size: 17px; font-weight: 800; } .gd-c small { font-size: 11px; color: var(--mut); }
+.gd-c.on { background: var(--fab); color: var(--zari-ink); } .gd-c.on small { color: var(--zari-ink); } .gd-c.past { opacity: .5; }
+.cb-h { display: flex; align-items: center; gap: 12px; } .cb-f { font-size: 20px; font-weight: 800; color: var(--sindoor); }
+.cb-d { display: flex; align-items: center; gap: 6px; margin-top: 8px; } .cb-d i { width: 22px; height: 8px; border-radius: 99px; background: var(--wash2); } .cb-d i.on { background: var(--sindoor); } .cb-d small { margin-left: 6px; color: var(--mut); font-size: 12px; }
+.qz-q { font-size: 17px; font-weight: 700; margin: 10px 0 14px; line-height: 1.4; } .qz-l { display: grid; gap: 10px; }
+.qz-o { text-align: left; padding: 14px; border-radius: 16px; background: var(--raise); border: 1px solid var(--line2); font-size: 15px; font-weight: 600; color: var(--ink); }
+.qz-o.ok { background: rgba(61,220,151,.2); border-color: var(--ok); } .qz-o.bad { background: rgba(240,90,71,.2); border-color: var(--sindoor); }
+.qz-ex { margin: 14px 0 12px; font-size: 14px; line-height: 1.5; } .qz-sc { font-size: 56px; font-weight: 800; color: var(--zari); margin: 8px 0; }
+.bg-g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0; }
+.bg-c { aspect-ratio: 1; border-radius: 18px; background: var(--raise); border: 1px solid var(--line2); display: grid; place-items: center; align-content: center; gap: 4px; padding: 6px; color: var(--ink); }
+.bg-c span { font-size: 30px; line-height: 1; } .bg-c b { font-size: 11px; font-weight: 700; line-height: 1.2; } .bg-c.on { background: var(--fab); color: var(--zari-ink); border-color: transparent; }

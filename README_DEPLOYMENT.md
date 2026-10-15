@@ -68,3 +68,10 @@ Upload the CONTENTS of this folder (not an extra outer folder) and commit. Verce
   - `assets/dhaak.mp3`: one single dhaak boom (about 1 second). The Dhaak pad and the rhythm's boom then use it.
   - `assets/dhaak-loop.mp3`: a clean 10 to 20 second loop of real dhaak. "Auto rhythm" then plays this loop instead of the synth pattern.
   If the files are missing, the app quietly uses the synth.
+
+## New in v14: Pujo Club (retention)
+- **Puja Day guide** (Home, top): shows what happens today (Shashthi 17 Oct to Bijoya Dashami 21 Oct, Kolkata dates per Drik Panchang) with a crowd tip, and a countdown before Shashthi. It changes every day.
+- **Pujo Club**: daily-visit streak with XP, 8 levels (Pujo Rookie to Pujo Legend), a 7-day streak bar. XP comes from daily visits, marking pandals visited (+20 once each), Roulette, Dhaak Jam, Immersive, the quiz and bingo.
+- **Daily quiz**: 3 new Durga Puja questions each day (11 in the bank, English and Bengali), +10 XP per right answer and +15 for a perfect score. One attempt per day.
+- **Pujo Bingo**: 3x3 card of puja experiences. Each line is +25 XP and a full card +100 XP.
+- Everything is stored on the device (localStorage). No backend change or SQL is needed. Files: `assets/club.js` (new), `assets/extras.js`, `assets/app.css`, `index.html`, `sw.js` (now `puja26-v14`).
